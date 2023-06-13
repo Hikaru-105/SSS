@@ -17,7 +17,7 @@
     <br>
     {% for schedules_this_date in schedules_this_date %}
       <ul>
-        <li>{{schedules_this_date[6]}}~{{schedules_this_date[7]}} {{schedules_this_date[1]}}</li>
+        <li>{{(schedules_this_date[6]/3600)%25}}:{{(schedules_this_date[6]/60)%60}}~{{(schedules_this_date[7]/3600)%25}}:{{(schedules_this_date[7]/60)%60}} {{schedules_this_date[1]}}</li>
       </ul>
     {% endfor %}
   </body>

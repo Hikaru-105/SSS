@@ -24,8 +24,8 @@ def index():
 @app.route('/edit/<int:year>-<int:month>-<int:date>')
 def edit(year,month,date):
     user_id = 0
-    con = sqlite3.connect(DATABASE)
     #ログインと結合テストするときにセッションから取得
+    con = sqlite3.connect(DATABASE)
     cur = con.cursor()
     cur.execute("SELECT * FROM schedule WHERE user_id = " + str(user_id) + " ORDER BY start_time")
     schedules_this_date = cur.fetchall()
