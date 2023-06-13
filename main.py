@@ -24,8 +24,7 @@ def monthcalendar(year, month):#結合テストではログイン後に取得し
 
 @app.route('/edit/<int:year>-<int:month>-<int:date>')
 def edit(year,month,date):
-    user_id = 0
-    #ログインと結合テストするときにセッションから取得
+    user_id = 0#ログインと結合テストするときにセッションから取得
     con = sqlite3.connect(DATABASE)
     cur = con.cursor()
     cur.execute("SELECT * FROM schedule WHERE user_id = " + str(user_id) + " AND year = " +str(year)+ " AND month = " +str(month)+ " AND date = " +str(date)+ " ORDER BY start_time")
