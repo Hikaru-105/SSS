@@ -6,17 +6,18 @@ import sqlite3
 DATABASE = 'SSS/db/database.db'
 
 
-@app.route('/')
-def index():
+@app.route('/monthcalendar/<int:year>-<int:month>')
+def monthcalendar(year, month):#結合テストではログイン後に取得したtoday = datetime.datetime.now()からyearとmonthを持ってくる。
     today = datetime.datetime.now()
-    month_first = datetime.datetime(today.year, today.month,1)
+    month_first = datetime.datetime(year, month,1)
     day_upper_left = month_first.weekday() * -1
-    month_last_day = calendar.monthrange(today.year, today.month)[1]
+    month_last_day = calendar.monthrange(year, month)[1]
     if day_upper_left == -6:
         day_upper_left = 1
     return render_template(
-        'I_Schedule/index.html',
-        today = today,
+        'I_Schedule/monthcalendar.html',
+        year = year,
+        month = month,
         month_last_day = month_last_day,
         day_upper_left = day_upper_left
     )
@@ -37,3 +38,7 @@ def edit(year,month,date):
         date = date,
         schedules_this_date = schedules_this_date
     )
+
+@app.route('/send_schedule/<int:year>-<int:month>-<int:date>', methods=['POST'])
+def send_schedule():
+    pass

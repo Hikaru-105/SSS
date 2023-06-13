@@ -43,7 +43,13 @@
       <header>
         <h1>スケジュールシェアリングシステム</h1>
         <h2>カレンダー</h2>
-        <h2>{{today.year}}年 {{today.month}}月</h2>
+        {% if month == 1 %}
+          <h2>　<a href="{{url_for('monthcalendar', year=year-1, month=12)}}">＜</a>　{{year}}年 {{month}}月　<a href="{{url_for('monthcalendar', year=year, month=month+1)}}">＞</a>　</h2>
+        {% elif month == 12 %}
+          <h2>　<a href="{{url_for('monthcalendar', year=year, month=month-1)}}">＜</a>　{{year}}年 {{month}}月　<a href="{{url_for('monthcalendar', year=year+1, month=1)}}">＞</a>　</h2>
+        {% else %}
+          <h2>　<a href="{{url_for('monthcalendar', year=year, month=month-1)}}">＜</a>　{{year}}年 {{month}}月　<a href="{{url_for('monthcalendar', year=year, month=month+1)}}">＞</a>　</h2>
+        {% endif %}
       </header>
       <table border="1">
         <tr>
@@ -61,7 +67,7 @@
               {% if (day_upper_left + day +week) < 1 or (day_upper_left + day +week) > month_last_day %}
                 <td>　</td>
               {% else %}
-                <td><a href="{{url_for('edit', year=today.year, month=today.month, date=day_upper_left + day +week)}}">{{day_upper_left + day +week}}</a></td>
+                <td><a href="{{url_for('edit', year=year, month=month, date=day_upper_left + day + week)}}">{{day_upper_left + day + week}}</a></td>
               {% endif %}
             {% endfor %}
           </tr>
