@@ -27,7 +27,7 @@ def edit(year,month,date):
     con = sqlite3.connect(DATABASE)
     #ログインと結合テストするときにセッションから取得
     cur = con.cursor()
-    cur.execute("SELECT * FROM schedule WHERE user_id = " + str(user_id) + ORDER BY start_time)
+    cur.execute("SELECT * FROM schedule WHERE user_id = " + str(user_id) + " ORDER BY start_time")
     schedules_this_date = cur.fetchall()
     con.close()
     return render_template(

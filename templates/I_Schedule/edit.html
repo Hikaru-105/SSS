@@ -15,10 +15,10 @@
       <input type="submit" name="登録">
     </form>
     <br>
-    {{% for schedules_this_date in schedules_this_date %}}
+    {% for schedules_this_date in schedules_this_date %}
       <ul>
         <li>{{schedules_this_date[6]}}~{{schedules_this_date[7]}} {{schedules_this_date[1]}}</li>
       </ul>
-    {{% endfor %}}
+    {% endfor %}
   </body>
 </html>
