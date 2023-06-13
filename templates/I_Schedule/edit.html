@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="jp" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>SSS | Edit</title>
+  </head>
+  <body>
+    <h1>Edit</h1>
+    <h2>{{year}}年 {{month}}月 {{date}}日</h2>
+    <h2>preparing...</h2>
+    <form action="{{url_for('edit', year=year, month=month, date=date)}}" method="post">
+      <input type="text" name="name">
+      <input type="text" name="start_time">
+      <input type="text" name="end_time">
+      <input type="submit" name="登録">
+    </form>
+    <br>
+    {{% for schedules_this_date in schedules_this_date %}}
+      <ul>
+        <li>{{schedules_this_date[6]}}~{{schedules_this_date[7]}} {{schedules_this_date[1]}}</li>
+      </ul>
+    {{% endfor %}}
+  </body>
+</html>
