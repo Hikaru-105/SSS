@@ -8,6 +8,7 @@ def create_schedule_table():
     cur.execute("CREATE TABLE IF NOT EXISTS schedule (schedule_id, schedule_name, user_id, year, month, date, start_time, end_time)")
     cur.execute("SELECT schedule_id FROM schedule WHERE schedule_name = 'unused'")
     data = cur.fetchall()
+    #データベースが空ならば仮データ登録
     if data == []:
         cur.execute("INSERT INTO schedule VALUES(0,'unused',0,2023,6,1,0,7200)")
         cur.execute("INSERT INTO schedule VALUES(1,'unused',0,2023,6,1,54000,81000)")
