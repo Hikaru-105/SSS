@@ -13,22 +13,23 @@
       <input type="text" name="schedule_name"><br>
       <select name="start_hour">
         {% for i in range(24) %}
-          <option value="{{str(i)}}">{{ "%02d" | format(i)}}</option>
+          <option value="{{i}}">{{ "%02d" | format(i)}}</option>
         {% endfor %}
       </select>時
       <select name="start_min">
         {% for i in [0,30] %}
-          <option value="{{str(i)}}">{{ "%02d" | format(i)}}</option>
+          <option value="{{i}}">{{ "%02d" | format(i)}}</option>
         {% endfor %}
       </select>分～
       <select name="end_hour">
         {% for i in range(24) %}
-          <option value="{{str(i)}}">{{ "%02d" | format(i)}}</option>
+          <option value="{{i}}">{{ "%02d" | format(i)}}</option>
         {% endfor %}
       </select>時
       <select name="end_min">
-        <option value="0">00</option>
-        <option value="30">30</option>
+        {% for i in [0,30] %}
+          <option value="{{i}}">{{ "%02d" | format(i)}}</option>
+        {% endfor %}
       </select>分<br>
       <input type="submit" name="登録">
     </form>
