@@ -42,4 +42,7 @@ def edit(year,month,date):
 def send_schedule():
     sche_name = request.form['schedule_name']
     start_hour = request.form['start_hour']
+    start_minute = request.form['start_minute']
+    end_hour = request.form['end_hour']
+    end_minute = request.form['end_minute']
     pass
