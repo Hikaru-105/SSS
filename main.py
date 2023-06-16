@@ -39,11 +39,12 @@ def edit(year,month,date):
         schedules_this_date = schedules_this_date
     )
 
-@app.route('/send_schedule/<int:year>-<int:month>-<int:date>', methods=['POST'])
-def send_schedule(year, month, date):
+@app.route('/submit_schedule/<int:user_id>-<int:year>-<int:month>-<int:date>', methods=['POST'])
+def submit_schedule(user_id, year, month, date):
     sche_name = request.form['schedule_name']
     start_hour = int(request.form['start_hour'])
     start_minute = int(request.form['start_minute'])
     end_hour = int(request.form['end_hour'])
     end_minute = int(request.form['end_minute'])
-    pass
+
+def
