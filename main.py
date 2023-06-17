@@ -42,13 +42,13 @@ def edit(year,month,date):
 
 @app.route('/submit_schedule/<int:user_id>-<int:year>-<int:month>-<int:date>', methods=['POST'])
 def submit_schedule(user_id, year, month, date):
-    sche_name = request.form['schedule_name']
-    start_hour = int(request.form['start_hour'])
-    start_minute = int(request.form['start_minute'])
-    end_hour = int(request.form['end_hour'])
-    end_minute = int(request.form['end_minute'])
+    sche_name = request.form.getlist('schedule_name')
+    start_hour = request.form.getlist('start_hour')
+    start_minute = request.form.getlist('start_minute')
+    end_hour = request.form.getlist('end_hour')
+    end_minute = request.form.getlist('end_minute')
 
-    delete_schedules = list(map(int, request.form['delete_this_schedule']))
+    delete_schedules = list(map(int, request.form.getlist('delete_this_schedule')))
 
 def send_schedule():
     pass
