@@ -50,5 +50,5 @@ def submit_schedule(user_id, year, month, date):
 
     delete_schedules = list(map(int, request.form.getlist('delete_this_schedule')))
 
-def edit_schedule(sche_name, user_id, start_hour, start_minute, end_hour, end_minute, delete_schedules):
+def edit_schedule(sche_name, user_id, year, month, date, start_hour, start_minute, end_hour, end_minute, delete_schedules):
     pass
