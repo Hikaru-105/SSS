@@ -47,8 +47,16 @@ def submit_schedule(user_id, year, month, date):
     start_minute = list(map(int, request.form.getlist('start_minute')))
     end_hour = list(map(int, request.form.getlist('end_hour')))
     end_minute = list(map(int, request.form.getlist('end_minute')))
-
     delete_schedules = list(map(int, request.form.getlist('delete_this_schedule')))
+    edit_schedule(sche_name, user_id, year, month, date, start_hour, start_minute, end_hour, end_minute, delete_schedules)
 
 def edit_schedule(sche_name, user_id, year, month, date, start_hour, start_minute, end_hour, end_minute, delete_schedules):
+    new_schedules = []
+    con = sqlite3.connect(DATABASE)
+    cur = con.cursor()
+    cur.execute("SELECT schedule_id FROM schedule ORDER BY schedule_id")
+    id_search = cur.fetchall()
+    con.close()
+    for i in range(len(sche_name)):
+
     pass
