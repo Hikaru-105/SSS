@@ -19,5 +19,5 @@ def create_schedule_table():
         con.commit()
     con.close()
 
-def edit_schedule(user_id, new_schedules, delete_schedules):
+def registar_schedule():
     pass
