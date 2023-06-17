@@ -1,6 +1,6 @@
 from SSS import app
 from SSS import db
-from flask import render_template
+from flask import render_template, redirect, request, url_for
 import datetime
 import calendar
 import sqlite3
@@ -49,22 +49,25 @@ def submit_schedule(user_id, year, month, date):
     start_minute = list(map(int, request.form.getlist('start_minute')))
     end_hour = list(map(int, request.form.getlist('end_hour')))
     end_minute = list(map(int, request.form.getlist('end_minute')))
-    delete_schedules = list(map(int, request.form.getlist('delete_this_schedule')))
+    delete_schedules = tuple(map(int, request.form.getlist('delete_this_schedule')))
     edit_schedule(sche_name, user_id, year, month, date, start_hour, start_minute, end_hour, end_minute, delete_schedules)
+    return redirect(url_for('edit', year=year, month=month, date=date))
 
 def edit_schedule(sche_name, user_id, year, month, date, start_hour, start_minute, end_hour, end_minute, delete_schedules):
     new_schedules = []
+    overlap = True
     con = sqlite3.connect(DATABASE)
     cur = con.cursor()
     cur.execute("SELECT schedule_id FROM schedule ORDER BY schedule_id")
     id_search = cur.fetchall()
     con.close()
-    id_search = [x[0] for x in mylist]
+    id_search = [x[0] for x in id_search]
     for i in range(len(sche_name)):
         while overlap:
             schedule_id = random.randint(-2147483648, 2147483647)
             overlap = schedule_id in id_search
+        id_search.append(schedule_id)
         start_time = start_hour[i]*3600 + start_minute[i]*60
         end_time = end_hour[i]*3600 + end_minute[i]*60
         new_schedules.append((schedule_id, sche_name[i], user_id, year, month, date, start_time, end_time))
-    pass
+    db.registar_schedule(new_schedules, delete_schedules)

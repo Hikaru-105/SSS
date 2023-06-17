@@ -9,7 +9,7 @@ def create_schedule_table():
     cur.execute("SELECT schedule_id FROM schedule WHERE schedule_name = 'unused'")
     data = cur.fetchall()
     #データベースが空ならば仮データ登録
-    if data == []:
+    if not data:
         cur.execute("INSERT INTO schedule VALUES(0,'unused',0,2023,6,1,0,7200)")
         cur.execute("INSERT INTO schedule VALUES(1,'unused',0,2023,6,1,54000,81000)")
         cur.execute("INSERT INTO schedule VALUES(2,'unused',0,2023,6,1,18000,39600)")
@@ -20,4 +20,15 @@ def create_schedule_table():
     con.close()
 
 def registar_schedule(new_schedules, delete_schedules):
-    pass
+    con = sqlite3.connect(DATABASE)
+    cur = con.cursor()
+    sql = "INSERT INTO schedule VALUES(?, ?, ?, ?, ?, ?, ?, ?)"
+    for new_schedule in new_schedules:
+        if new_schedule[6] == 0 and new_schedule[7] == 0:
+            continue
+        cur.execute(sql,new_schedule)
+    if delete_schedules:
+        sql = "DELETE FROM schedule WHERE schedule_id IN ({})".format(','.join(['?'] * len(delete_schedules)))
+        cur.execute(sql,delete_schedules)
+    con.commit()
+    con.close()

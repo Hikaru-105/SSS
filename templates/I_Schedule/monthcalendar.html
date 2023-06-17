@@ -64,7 +64,7 @@
         {% for week in [0,7,14,21,28,35] %}
           <tr>
             {% for day in range(7) %}
-              {% if (day_upper_left + day +week) < 1 or (day_upper_left + day +week) > month_last_day %}
+              {% if (day_upper_left + day + week) < 1 or (day_upper_left + day + week) > month_last_day %}
                 <td>　</td>
               {% else %}
                 <td><a href="{{url_for('edit', year=year, month=month, date=day_upper_left + day + week)}}">{{day_upper_left + day + week}}</a></td>
