@@ -1,6 +1,23 @@
 <!DOCTYPE html>
 <html lang="ja">
 
+<script>
+    function groupConf() {
+        var group_name = document.getElementById("group_name").value;
+        var group_pass = document.getElementById("group_pass").value;
+
+        if (group_name == "" || group_pass == "") {
+            alert("グループ名または合言葉が入力されていません");
+        }
+        else if (confirm("グループ名 : " + group_name + "\n合言葉     : " + group_pass + "\nに登録しますか？") == true) {
+            document.getElementById("userInput").value = "True";
+        }
+        else {
+            document.getElementById("userInput").value = "False";
+        }
+    }
+</script>
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,16 +26,18 @@
 </head>
 
 <body>
-    <form action="/joinGroup/in" method="post">
+    <!-- action="/joinGroup" -->
+    <form action="/" method="post">
         <div>
             グループ名
-            <input type="text" name="group_name">
+            <input type="text" id="group_name" name="group_name" value="">
         </div>
         <div>
             合言葉
-            <input type="text" name="group_pass">
+            <input type="text" id="group_pass" name="group_pass" value="">
         </div>
-        <input type="submit" value='OK'>
+        <input type="hidden" id="userInput" name="userInput">
+        <button type="submit" onclick="groupConf()">加入する</button>
     </form>
 </body>
 
