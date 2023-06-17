@@ -33,6 +33,7 @@ def edit(year,month,date):
     con.close()
     return render_template(
         'I_Schedule/edit.html',
+        user_id = user_id,
         year = year,
         month = month,
         date = date,
@@ -47,4 +48,7 @@ def submit_schedule(user_id, year, month, date):
     end_hour = int(request.form['end_hour'])
     end_minute = int(request.form['end_minute'])
 
-def
+    delete_schedules = list(map(int, request.form['delete_this_schedule']))
+
+def send_schedule():
+    pass
