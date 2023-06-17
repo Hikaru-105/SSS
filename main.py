@@ -4,6 +4,8 @@ from flask import render_template
 import datetime
 import calendar
 import sqlite3
+import random
+
 DATABASE = 'SSS/db/database.db'
 
 
@@ -57,6 +59,12 @@ def edit_schedule(sche_name, user_id, year, month, date, start_hour, start_minut
     cur.execute("SELECT schedule_id FROM schedule ORDER BY schedule_id")
     id_search = cur.fetchall()
     con.close()
+    id_search = [x[0] for x in mylist]
     for i in range(len(sche_name)):
-
+        while overlap:
+            schedule_id = random.randint(-2147483648, 2147483647)
+            overlap = schedule_id in id_search
+        start_time = start_hour[i]*3600 + start_minute[i]*60
+        end_time = end_hour[i]*3600 + end_minute[i]*60
+        new_schedules.append((schedule_id, sche_name[i], user_id, year, month, date, start_time, end_time))
     pass
