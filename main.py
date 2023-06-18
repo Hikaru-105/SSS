@@ -72,7 +72,7 @@ def submit_weekday_schedule(user_id, year, month):
     start_minute = list(map(int, request.form.getlist('start_minute')))
     end_hour = list(map(int, request.form.getlist('end_hour')))
     end_minute = list(map(int, request.form.getlist('end_minute')))
-    edit_schedule(sche_name, user_id, year, month, date, start_hour, start_minute, end_hour, end_minute, [])
+    edit_schedule(sche_name, user_id, years, months, dates, start_hour, start_minute, end_hour, end_minute, [])
     return redirect(url_for('monthcalendar', year=year, month=month))
 
 
