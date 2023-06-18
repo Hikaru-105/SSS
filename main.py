@@ -8,7 +8,6 @@ import random
 
 DATABASE = 'SSS/db/database.db'
 
-
 @app.route('/monthcalendar/<int:year>-<int:month>')
 def monthcalendar(year, month):#結合テストではログイン後に取得したtoday = datetime.datetime.now()からyearとmonthを持ってくる。
     today = datetime.datetime.now()
@@ -49,11 +48,35 @@ def submit_schedule(user_id, year, month, date):
     start_minute = list(map(int, request.form.getlist('start_minute')))
     end_hour = list(map(int, request.form.getlist('end_hour')))
     end_minute = list(map(int, request.form.getlist('end_minute')))
+    years = [year]
+    months = [month]
+    dates = [date]
     delete_schedules = tuple(map(int, request.form.getlist('delete_this_schedule')))
-    edit_schedule(sche_name, user_id, year, month, date, start_hour, start_minute, end_hour, end_minute, delete_schedules)
+    edit_schedule(sche_name, user_id, years, months, dates, start_hour, start_minute, end_hour, end_minute, delete_schedules)
     return redirect(url_for('edit', year=year, month=month, date=date))
 
-def edit_schedule(sche_name, user_id, year, month, date, start_hour, start_minute, end_hour, end_minute, delete_schedules):
+@app.route('/edit_weekday/<int:year>-<int:month>')
+def edit_weekday(year, month):
+    user_id = 0#結合テストするときはログイン情報から取得
+    return render_template(
+    'I_Schedule/weekdayedit.html',
+    user_id = user_id,
+    year = year,
+    month = month,
+    )
+
+@app.route('/submit_weekday_schedule/<int:user_id>-<int:year>-<int:month>', methods=['POST'])
+def submit_weekday_schedule(user_id, year, month):
+    sche_name = request.form.getlist('schedule_name')
+    start_hour = list(map(int, request.form.getlist('start_hour')))
+    start_minute = list(map(int, request.form.getlist('start_minute')))
+    end_hour = list(map(int, request.form.getlist('end_hour')))
+    end_minute = list(map(int, request.form.getlist('end_minute')))
+    edit_schedule(sche_name, user_id, year, month, date, start_hour, start_minute, end_hour, end_minute, [])
+    return redirect(url_for('monthcalendar', year=year, month=month))
+
+
+def edit_schedule(sche_name, user_id, years, months, dates, start_hour, start_minute, end_hour, end_minute, delete_schedules):
     new_schedules = []
     overlap = True
     con = sqlite3.connect(DATABASE)
@@ -69,5 +92,5 @@ def edit_schedule(sche_name, user_id, year, month, date, start_hour, start_minut
         id_search.append(schedule_id)
         start_time = start_hour[i]*3600 + start_minute[i]*60
         end_time = end_hour[i]*3600 + end_minute[i]*60
-        new_schedules.append((schedule_id, sche_name[i], user_id, year, month, date, start_time, end_time))
+        new_schedules.append((schedule_id, sche_name[i], user_id, years[i], months[i], dates[i], start_time, end_time))
     db.registar_schedule(new_schedules, delete_schedules)

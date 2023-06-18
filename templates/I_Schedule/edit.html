@@ -2,12 +2,12 @@
 <html lang="jp" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>SSS | Edit</title>
+    <title>SSS | スケジュール</title>
   </head>
   <body>
-    <h1>Edit</h1>
-    <h2>{{year}}年 {{month}}月 {{date}}日</h2>
-    <h2>preparing...</h2>
+    <h1>{{year}}年 {{month}}月 {{date}}日のスケジュール</h1>
+    <br>
+    <h2><a href="{{url_for('monthcalendar', year=year, month=month)}}">カレンダーに戻る</a></h2>
     <form action="{{url_for('submit_schedule',user_id=user_id , year=year, month=month, date=date)}}" method="post">
       スケジュール名<br>
       <input type="text" name="schedule_name"><br>
@@ -31,7 +31,7 @@
           <option value="{{i}}">{{ "%02d" | format(i)}}</option>
         {% endfor %}
       </select>分<br>
-      <input type="submit" name="登録">
+      <input type="submit" name="登録" value="登録">
       <br>
       <br>
       <ul>
