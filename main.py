@@ -11,8 +11,8 @@ DATABASE = 'SSS/db/database.db'
 @app.route('/monthcalendar/<int:year>-<int:month>')
 def monthcalendar(year, month):#結合テストではログイン後に取得したtoday = datetime.datetime.now()からyearとmonthを持ってくる。
     today = datetime.datetime.now()
-    month_first = datetime.datetime(year, month,1)
-    day_upper_left = month_first.weekday() * -1
+    month_first_day = datetime.datetime(year, month,1)
+    day_upper_left = month_first_day.weekday() * -1
     month_last_day = calendar.monthrange(year, month)[1]
     if day_upper_left == -6:
         day_upper_left = 1
@@ -72,6 +72,24 @@ def submit_weekday_schedule(user_id, year, month):
     start_minute = list(map(int, request.form.getlist('start_minute')))
     end_hour = list(map(int, request.form.getlist('end_hour')))
     end_minute = list(map(int, request.form.getlist('end_minute')))
+
+    years = []
+    months = []
+    dates = []
+
+    date_temp = 0
+
+    today = datetime.datetime.now()
+    month_first_day = datetime.datetime(year, month,1)
+    day_upper_left = month_first_day.weekday() * -1
+    month_last_day = calendar.monthrange(year, month)[1]
+    
+    if day_upper_left == -6:
+        day_upper_left = 1
+    for weekday in range(7):
+        date_temp = day_upper_left + weekday
+        while condition:
+            pass
     edit_schedule(sche_name, user_id, years, months, dates, start_hour, start_minute, end_hour, end_minute, [])
     return redirect(url_for('monthcalendar', year=year, month=month))
 
