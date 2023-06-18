@@ -8,8 +8,10 @@ join = Flask(__name__)
 @join.route("/", methods=["GET", "POST"])  # @join.route("/joinGroup")
 def joinGroupUI():
     if request.method == "GET":
+        group_name = ""
+        group_pass = ""
         url = "joinGroup/joinGroup.html"
-        return render_template(url)
+        return render_template(url, group_name=group_name, group_pass=group_pass, notExist="")
 
     if request.method == "POST":
         group_name = str(request.form.get("group_name"))
@@ -22,7 +24,7 @@ def joinGroupUI():
                 return redirect(url_for("joinGroupAuth", group_name=group_name, group_pass=group_pass))
             elif userInput == "False":
                 url = "joinGroup/joinGroup.html"
-        return render_template(url)
+        return render_template(url, group_name=group_name, group_pass=group_pass, notExist="")
 
 
 @join.route("/joinGroup/auth/<string:group_name>/<string:group_pass>")
@@ -33,6 +35,8 @@ def joinGroupAuth(group_name, group_pass):
         # notExist
         print("notExist") ###
         url = "joinGroup/joinGroup.html"
+        script = "<script>alert('入力されたグループは見つかりませんでした');</script>"
+        return render_template(url, group_name=group_name, group_pass=group_pass, notExist=script)
     else:
         # success
         url = "groupSchedule"
@@ -48,8 +52,3 @@ if __name__ == "__main__":
 #グループ加入画面に戻る
 #url = "joinGroup/joinGroup.html"
 #return render_template(url)
-
-#ダイアログ
-# 確認........confirm
-#存在しない...not_exist
-#成功........success

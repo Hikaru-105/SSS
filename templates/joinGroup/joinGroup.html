@@ -26,17 +26,20 @@
 </head>
 
 <body>
+    {% autoescape False %}
+    {{ notExist }}
+    {% endautoescape %}
     <!-- action="/joinGroup" -->
     <form action="/" method="post">
         <div>
             グループ名
-            <input type="text" id="group_name" name="group_name" value="">
+            <input type="text" id="group_name" name="group_name" value="{{group_name}}">
         </div>
         <div>
             合言葉
-            <input type="text" id="group_pass" name="group_pass" value="">
+            <input type="text" id="group_pass" name="group_pass" value="{{group_pass}}">
         </div>
-        <input type="hidden" id="userInput" name="userInput">
+        <input type="hidden" id="userInput" name="userInput" value="">
         <button type="submit" onclick="groupConf()">加入する</button>
     </form>
 </body>
