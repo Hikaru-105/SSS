@@ -114,7 +114,6 @@ def submit_weekday_schedule(user_id, year, month):
 
 def edit_schedule(sche_name, user_id, years, months, dates, start_hour, start_minute, end_hour, end_minute, delete_schedules):
     new_schedules = []
-    overlap = True
     con = sqlite3.connect(DATABASE)
     cur = con.cursor()
     cur.execute("SELECT schedule_id FROM schedule ORDER BY schedule_id")
@@ -122,6 +121,7 @@ def edit_schedule(sche_name, user_id, years, months, dates, start_hour, start_mi
     con.close()
     id_search = [x[0] for x in id_search]
     for i in range(len(sche_name)):
+        overlap = True
         while overlap:
             schedule_id = random.randint(-2147483648, 2147483647)
             overlap = schedule_id in id_search
