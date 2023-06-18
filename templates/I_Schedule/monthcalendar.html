@@ -74,10 +74,9 @@
         {% endfor %}
       </table>
       <footer>
-        <!--<button type="button" name="button">送信</button>-->
         <ul>
           <li><a href="group">グループ</a></li>
-          <li><a href="dayedit">曜日スケジュール</a></li>
+          <li><a href="{{url_for('edit_weekday', year=year, month=month)}}">曜日スケジュール</a></li>
           <li><a href="option">設定</a></li>
         </ul>
       </footer>

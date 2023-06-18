@@ -67,15 +67,20 @@ def edit_weekday(year, month):
 
 @app.route('/submit_weekday_schedule/<int:user_id>-<int:year>-<int:month>', methods=['POST'])
 def submit_weekday_schedule(user_id, year, month):
-    sche_name = request.form.getlist('schedule_name')
-    start_hour = list(map(int, request.form.getlist('start_hour')))
-    start_minute = list(map(int, request.form.getlist('start_minute')))
-    end_hour = list(map(int, request.form.getlist('end_hour')))
-    end_minute = list(map(int, request.form.getlist('end_minute')))
+    sche_name_temp = request.form.getlist('schedule_name')
+    start_hour_temp = list(map(int, request.form.getlist('start_hour')))
+    start_minute_temp = list(map(int, request.form.getlist('start_minute')))
+    end_hour_temp = list(map(int, request.form.getlist('end_hour')))
+    end_minute_temp = list(map(int, request.form.getlist('end_minute')))
 
     years = []
     months = []
     dates = []
+    sche_name = []
+    start_hour = []
+    start_minute = []
+    end_hour = []
+    end_minute = []
 
     date_temp = 0
 
@@ -83,13 +88,26 @@ def submit_weekday_schedule(user_id, year, month):
     month_first_day = datetime.datetime(year, month,1)
     day_upper_left = month_first_day.weekday() * -1
     month_last_day = calendar.monthrange(year, month)[1]
-    
+
     if day_upper_left == -6:
         day_upper_left = 1
     for weekday in range(7):
         date_temp = day_upper_left + weekday
-        while condition:
-            pass
+        while date_temp < month_last_day:
+            if date_temp < 1:
+                date_temp += 7
+                print("next date_temp = "+str(date_temp))
+                continue
+            years.append(year)
+            months.append(month)
+            dates.append(date_temp)
+            sche_name.append(sche_name_temp[weekday])
+            start_hour.append(start_hour_temp[weekday])
+            start_minute.append(start_minute_temp[weekday])
+            end_hour.append(end_hour_temp[weekday])
+            end_minute.append(end_minute_temp[weekday])
+            date_temp += 7
+            print("this date_temp = "+str(date_temp)+" schedule added")
     edit_schedule(sche_name, user_id, years, months, dates, start_hour, start_minute, end_hour, end_minute, [])
     return redirect(url_for('monthcalendar', year=year, month=month))
 
