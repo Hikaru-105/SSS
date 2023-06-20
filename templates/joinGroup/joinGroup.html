@@ -18,6 +18,12 @@
     }
 </script>
 
+<style>
+    .center {
+        text-align: center;
+    }
+</style>
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -30,17 +36,26 @@
     {{ notExist }}
     {% endautoescape %}
     <!-- action="/joinGroup" -->
-    <form action="/" method="post">
+    <form action="/" method="post" class="center">
+        <br>
         <div>
             グループ名
-            <input type="text" id="group_name" name="group_name" value="{{group_name}}">
         </div>
         <div>
+            <input type="text" id="group_name" name="group_name" value="{{group_name}}" maxlength="16">
+        </div>
+        <br>
+        <div>
             合言葉
-            <input type="text" id="group_pass" name="group_pass" value="{{group_pass}}">
+        </div>
+        <div>
+            <input type="text" id="group_pass" name="group_pass" value="{{group_pass}}" maxlength="16">
+        </div>
+        <br>
+        <div>
+            <button type="submit" onclick="groupConf()">加入する</button>
         </div>
         <input type="hidden" id="userInput" name="userInput" value="">
-        <button type="submit" onclick="groupConf()">加入する</button>
     </form>
 </body>
 
