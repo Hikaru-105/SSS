@@ -2,7 +2,7 @@ import searchGroup
 import updateGroup
 
 from flask import Flask, render_template, request, redirect, url_for
-join = Flask(__name__)
+join = Flask(__name__) # app
 
 
 @join.route("/", methods=["GET", "POST"])  # @join.route("/joinGroup")
@@ -11,7 +11,6 @@ def joinGroupUI():
         group_name = ""
         group_pass = ""
         url = "joinGroup/joinGroup.html"
-        return render_template(url, group_name=group_name, group_pass=group_pass, notExist="")
 
     if request.method == "POST":
         group_name = str(request.form.get("group_name"))
@@ -24,31 +23,23 @@ def joinGroupUI():
                 return redirect(url_for("joinGroupAuth", group_name=group_name, group_pass=group_pass))
             elif userInput == "False":
                 url = "joinGroup/joinGroup.html"
-        return render_template(url, group_name=group_name, group_pass=group_pass, notExist="")
+
+    return render_template(url, group_name=group_name, group_pass=group_pass, notExist="")
 
 
 @join.route("/joinGroup/auth/<string:group_name>/<string:group_pass>")
 def joinGroupAuth(group_name, group_pass):
-    print("auth") ###
-    result = searchGroup.searchGroup(group_name, group_pass)
-    if result == 0:
-        # notExist
-        print("notExist") ###
+    group_id = searchGroup.searchGroup(group_name, group_pass)
+    if group_id == 0:
         url = "joinGroup/joinGroup.html"
         script = "<script>alert('入力されたグループは見つかりませんでした');</script>"
         return render_template(url, group_name=group_name, group_pass=group_pass, notExist=script)
     else:
-        # success
-        url = "groupSchedule"
-        updateGroup.updateGroup(123, "user")
-        print("success") ###
-    return "ok"  # return render_template(url)
+        user_id = 3 # 仮
+        updateGroup.updateGroup(user_id, group_id)
+        url = "groupSchedule" # グループ画面のurl
+        return "ok"  # return render_template(url)
 
 
 if __name__ == "__main__":
     join.run()
-
-
-#グループ加入画面に戻る
-#url = "joinGroup/joinGroup.html"
-#return render_template(url)
