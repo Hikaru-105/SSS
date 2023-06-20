@@ -30,6 +30,7 @@ def registar_schedule(new_schedules, delete_schedules):
         if new_schedule[6] == 0 and new_schedule[7] == 0:
             continue
         cur.execute(sql,new_schedule)
+    #削除するスケジュールがあればデータベースから削除
     if delete_schedules:
         sql = "DELETE FROM schedule WHERE schedule_id IN ({})".format(','.join(['?'] * len(delete_schedules)))
         cur.execute(sql,delete_schedules)
