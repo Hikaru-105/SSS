@@ -7,7 +7,7 @@ import sqlite3
 import random
 
 #データベースファイルの位置
-DATABASE = 'SSS/db/database.db'
+DATABASE = 'SSS/instance/database.db'
 
 #ルーティング
 @app.route('/monthcalendar/<int:year>-<int:month>')
@@ -32,7 +32,7 @@ def monthcalendar(year, month):
         day_upper_left = day_upper_left
     )
 
-    #スケジュール編集する日付を選択
+#スケジュール編集する日付を選択
 @app.route('/edit/<int:year>-<int:month>-<int:date>')
 def edit(year,month,date):
     #結合テストするときにログイン情報から取得
