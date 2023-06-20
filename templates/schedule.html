@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>個人スケジュール画面</h1>
+<p>{{ m }}</p>
+<a href="/logout" role="button">ログアウト</a>
+
+<article>
+    <h2>{{ current_user.username }}のスケジュール</h2>
+    <h3> ID {{ current_user.id }} </h3>
+</article>
+
+{% endblock %}
