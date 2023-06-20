@@ -19,7 +19,7 @@
       background-color: #ddd;
       color: #000;
       text-align: center;
-      padding: 30px 0;
+      padding: 10px 0;
 
       position: absolute;/*←絶対位置*/
       bottom: 0; /*下に固定*/
@@ -41,9 +41,8 @@
       text-align: center;
       font-size: 300%;
     }
-    #footermenu{
-      width: 25%;
-      display: flex;
+    #linkmenu{
+      font-size: 300%;
     }
     </style>
   </head>
@@ -80,9 +79,9 @@
       </table>
       <footer>
         <ul>
-          <li><a href="group">グループ</a></li>
-          <li><a href="{{url_for('edit_weekday', year=year, month=month)}}">曜日スケジュール</a></li>
-          <li><a href="option">設定</a></li>
+          <li id="linkmenu"><a href="group">グループ</a></li>
+          <li id="linkmenu"><a href="{{url_for('edit_weekday', year=year, month=month)}}">曜日スケジュール</a></li>
+          <li id="linkmenu"><a href="option">設定</a></li>
         </ul>
       </footer>
     </div>

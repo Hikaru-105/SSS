@@ -3,6 +3,7 @@ import sqlite3
 DATABASE = 'SSS/db/database.db'
 
 def create_schedule_table():
+    #データベース接続
     con = sqlite3.connect(DATABASE)
     cur = con.cursor()
     cur.execute("CREATE TABLE IF NOT EXISTS schedule (schedule_id, schedule_name, user_id, year, month, date, start_time, end_time)")
@@ -19,6 +20,7 @@ def create_schedule_table():
         con.commit()
     con.close()
 
+#データベースへスケジュール情報を登録
 def registar_schedule(new_schedules, delete_schedules):
     con = sqlite3.connect(DATABASE)
     cur = con.cursor()
