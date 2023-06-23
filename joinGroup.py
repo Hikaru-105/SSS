@@ -5,6 +5,13 @@ from flask import Flask, render_template, request, redirect, url_for
 join = Flask(__name__) # app
 
 
+###################################################################################################
+# Function Name...joinGroupUI
+# Designer........越村太一
+# Function........グループ名、合言葉の入力を受け取り認証要求をする
+# Return..........userInput == "True" : 認証要求
+#                 else                : グループ加入画面を表示する
+###################################################################################################
 @join.route("/", methods=["GET", "POST"])  # @join.route("/joinGroup")
 def joinGroupUI():
     if request.method == "GET":
@@ -27,6 +34,13 @@ def joinGroupUI():
     return render_template(url, group_name=group_name, group_pass=group_pass, notExist="")
 
 
+###################################################################################################
+# Function Name...joinGroupAuth
+# Designer........越村太一
+# Function........グループ名、合言葉をsearchGroupへ渡し、返り値によって加入するか判定する
+# Return..........searchGroupの返り値が0 : グループ加入画面を表示する
+#                 else                   : グループスケジュール画面表示する
+###################################################################################################
 @join.route("/joinGroup/auth/<string:group_name>/<string:group_pass>")
 def joinGroupAuth(group_name, group_pass):
     group_id = searchGroup.searchGroup(group_name, group_pass)
