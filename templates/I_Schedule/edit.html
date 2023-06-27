@@ -10,41 +10,40 @@
     <br>
     <h2><a href="{{url_for('monthcalendar', year=year, month=month)}}">カレンダーに戻る</a></h2>
       <div class="parent">
-      <div class="">
-
+      <div id="time_input">
+        <form action="{{url_for('submit_schedule',user_id=user_id , year=year, month=month, date=date)}}" method="post">
+          スケジュール名<br>
+          <input type="text" name="schedule_name"><br>
+          <select name="start_hour">
+            {% for i in range(24) %}
+              <option value="{{i}}">{{ "%02d" | format(i)}}</option>
+            {% endfor %}
+          </select>時
+          <select name="start_minute">
+            {% for i in [0,30] %}
+              <option value="{{i}}">{{ "%02d" | format(i)}}</option>
+            {% endfor %}
+          </select>分～
+          <select name="end_hour">
+            {% for i in range(25) %}
+              <option value="{{i}}">{{ "%02d" | format(i)}}</option>
+            {% endfor %}
+          </select>時
+          <select name="end_minute">
+            {% for i in [0,30] %}
+              <option value="{{i}}">{{ "%02d" | format(i)}}</option>
+            {% endfor %}
+          </select>分<br>
+          <input type="submit" name="登録" value="登録">
+        </form>
       </div>
-      <form action="{{url_for('submit_schedule',user_id=user_id , year=year, month=month, date=date)}}" method="post">
-        スケジュール名<br>
-        <input type="text" name="schedule_name"><br>
-        <select name="start_hour">
-          {% for i in range(24) %}
-            <option value="{{i}}">{{ "%02d" | format(i)}}</option>
-          {% endfor %}
-        </select>時
-        <select name="start_minute">
-          {% for i in [0,30] %}
-            <option value="{{i}}">{{ "%02d" | format(i)}}</option>
-          {% endfor %}
-        </select>分～
-        <select name="end_hour">
-          {% for i in range(24) %}
-            <option value="{{i}}">{{ "%02d" | format(i)}}</option>
-          {% endfor %}
-        </select>時
-        <select name="end_minute">
-          {% for i in [0,30] %}
-            <option value="{{i}}">{{ "%02d" | format(i)}}</option>
-          {% endfor %}
-        </select>分<br>
-        <input type="submit" name="登録" value="登録">
-        <br>
-        <br>
+      <div id="schedules">
         <ul>
           {% for schedules_this_date in schedules_this_date %}
             <li>{{ "%02d" | format(schedules_this_date[6]/3600)}}:{{ "%02d" | format((schedules_this_date[6]/60)%60)}}~{{ "%02d" | format(schedules_this_date[7]/3600)}}:{{ "%02d" | format((schedules_this_date[7]/60)%60)}} {{schedules_this_date[1]}} <input type="checkbox" name="delete_this_schedule" value="{{schedules_this_date[0]}}">削除</li>
           {% endfor %}
         </ul>
-      </form>
+      </div>
     </div>
   </body>
 </html>

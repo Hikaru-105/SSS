@@ -41,7 +41,7 @@ def edit(year,month,date):
     con = sqlite3.connect(DATABASE)
     cur = con.cursor()
     #クエリ実行
-    cur.execute("SELECT * FROM schedule WHERE user_id = " + str(user_id) + " AND year = " +str(year)+ " AND month = " +str(month)+ " AND date = " +str(date)+ " ORDER BY start_time, end_time")
+    cur.execute("SELECT * FROM schedule WHERE user_id = " +str(user_id)+ " AND year = " +str(year)+ " AND month = " +str(month)+ " AND date = " +str(date)+ " ORDER BY start_time, end_time")
     #クエリ結果取得
     schedules_this_date = cur.fetchall()
     #接続断

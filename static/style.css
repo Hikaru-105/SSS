@@ -38,3 +38,7 @@ table{
 #linkmenu{
   font-size: 300%;
 }
+#time_input{
+    width: auto;
+    display: inline;
+}
