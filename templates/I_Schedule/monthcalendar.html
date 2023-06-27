@@ -1,15 +1,50 @@
 <!DOCTYPE html>
 <html lang="jp" dir="ltr">
+
   <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SSS | calendar</title>
     <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    <script>
+    window.addEventListener('DOMContentLoaded', function(){
+      let btn_passview = document.getElementById("btn_passview");
+      let input_pass = document.getElementById("input_pass");
+      let input_pass2 = document.getElementById("input_pass2");
+      btn_passview.addEventListener("click", (e)=>{
+        e.preventDefault();
+        if( input_pass.type === 'password' ) {
+          input_pass.type = 'text';
+          input_pass2.type = 'text';
+          btn_passview.textContent = 'パスワード非表示';
+        } else {
+          input_pass.type = 'password';
+          input_pass2.type = 'password';
+          btn_passview.textContent = 'パスワード表示';
+        }
+      });
+    });
+    </script>
+    <script>
+      function CheckPassword(input_pass2){
+      // 入力値取得
+        var input1 = input_pass.value;
+        var input2 = input_pass2.value;
+        // パスワード比較
+        if(input1 != input2){
+          input_pass2.setCustomValidity("入力値が一致しません。");
+        }else{
+          input_pass2.setCustomValidity('');
+        }
+      }
+    </script>
   </head>
   <body>
     <div class="wrapper">
       <header>
         <h1>スケジュールシェアリングシステム</h1>
-        <h1>カレンダー</h1>
+        <h1>あなたのユーザーID：{{"%08d"|format(user_id)}}</h1>
         {% if month == 1 %}
           <h1>　<a href="{{url_for('monthcalendar', year=year-1, month=12)}}">＜</a>　{{year}}年 {{month}}月　<a href="{{url_for('monthcalendar', year=year, month=month+1)}}">＞</a>　</h1>
         {% elif month == 12 %}

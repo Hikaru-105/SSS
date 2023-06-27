@@ -1,18 +1,119 @@
 from SSS import app
-from SSS import db
+from SSS import schedule_system_database
 from flask import render_template, redirect, request, url_for
+
 import datetime
 import calendar
+
 import sqlite3
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin, LoginManager, login_user, logout_user, login_required, current_user
+
 import random
+
+from werkzeug.security import generate_password_hash, check_password_hash
+import os
+
+import re
+
+app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///user.db'
+app.config["SECRET_KEY"] = os.urandom(24)
+
+db = SQLAlchemy(app)
+
+class User(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(16), nullable=False, unique=False, primary_key=False)
+    password = db.Column(db.String(16))
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+with app.app_context():
+    db.create_all()
 
 #データベースファイルの位置
 DATABASE = 'SSS/instance/database.db'
 
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+def isalnum_ascii(s):
+    return True if s.isalnum() and s.isascii() else False
+
+@app.route("/", methods=['GET', 'POST'])
+@login_required
+def schedule():
+    if request.method == 'GET':
+        posts  = User.query.all()
+        current_user.id = f'{current_user.id:08}'
+        today = datetime.datetime.now()
+        return redirect(url_for('monthcalendar', year=today.year, month=today.month))
+
+@app.route("/signup", methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        password = request.form.get('re_password')
+        if(len(username) > 16):
+            e = 'ユーザ名は16文字以内にしてください'
+            return render_template('signup.html', e=e)
+        if(len(password) > 16):
+            e = 'パスワードは16文字以内にしてください'
+            return render_template('signup.html', e=e)
+        if(password!=re_password):
+            e = 'パスワードと確認用パスワードが一致していません'
+            return render_template('signup.html', e=e)
+        if(isalnum_ascii(password) == False):
+            e = 'パスワードは半角英数にしてください'
+            return render_template('signup.html', e=e)
+        user = User(username=username, password=generate_password_hash(password, method='sha256'))
+
+        db.session.add(user)
+        db.session.commit()
+        login_user(user)
+        return redirect('/')
+    else:
+        return render_template('signup.html')
+
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        hage = request.args.get('checkbox_sample', default='', type=str)
+        if hage == 'on':
+            return render_template('signup.html')
+        id = request.form.get('id')
+        password = request.form.get('password')
+
+        if(User.query.filter_by(id=id).count()==0):
+            e = 'IDが間違っています'
+            return render_template('login.html', e=e)
+
+        user = User.query.filter_by(id=id).first()
+        if check_password_hash(user.password, password):
+            login_user(user)
+            return redirect('/')
+        else:
+            e = 'IDまたはパスワードが間違っています'
+            return render_template('login.html', e=e)
+    else:
+        return render_template('login.html')
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect('/login')
+
 #ルーティング
 @app.route('/monthcalendar/<int:year>-<int:month>')
+#ログイン要求
+#@login_required
 #カレンダー表示
 def monthcalendar(year, month):
+    user_id = current_user.id
     #結合テストではログイン後に取得したtoday = datetime.datetime.now()からyearとmonthを持ってくる。
     #月初めの曜日の算出[0:"月",1:"火",2:"水",3:"木",4:"金",5:"土",6:"日"]
     month_first_day = datetime.datetime(year, month,1)
@@ -26,6 +127,7 @@ def monthcalendar(year, month):
     #返り値を渡すhtmlファイルと引数を指定
     return render_template(
         'I_Schedule/monthcalendar.html',
+        user_id = user_id,
         year = year,
         month = month,
         month_last_day = month_last_day,
@@ -34,9 +136,10 @@ def monthcalendar(year, month):
 
 #スケジュール編集する日付を選択
 @app.route('/edit/<int:year>-<int:month>-<int:date>')
+#@login_required
 def edit(year,month,date):
     #結合テストするときにログイン情報から取得
-    user_id = 0
+    user_id = current_user.id
     #データベース接続
     con = sqlite3.connect(DATABASE)
     cur = con.cursor()
@@ -57,6 +160,7 @@ def edit(year,month,date):
 
 #入力データ処理
 @app.route('/submit_schedule/<int:user_id>-<int:year>-<int:month>-<int:date>', methods=['POST'])
+#@login_required
 def submit_schedule(user_id, year, month, date):
     #入力データをリストに変換
     sche_name = request.form.getlist('schedule_name')
@@ -69,15 +173,19 @@ def submit_schedule(user_id, year, month, date):
     dates = [date]
     #削除するリストは変換処理が無いためデータベースに送るためのタプルに変換
     delete_schedules = tuple(map(int, request.form.getlist('delete_this_schedule')))
+    print("in submission sector")
+    print(delete_schedules)
+
     #スケジュールデータ変換処理に入力データを送る
     edit_schedule(sche_name, user_id, years, months, dates, start_hour, start_minute, end_hour, end_minute, delete_schedules)
     #自身へリダイレクトしてページ更新
     return redirect(url_for('edit', year=year, month=month, date=date))
 
 @app.route('/edit_weekday/<int:year>-<int:month>')
+#@login_required
 def edit_weekday(year, month):
     #結合テストするときはログイン情報から取得
-    user_id = 0
+    user_id = current_user.id
     return render_template(
     'I_Schedule/weekdayedit.html',
     user_id = user_id,
@@ -86,6 +194,7 @@ def edit_weekday(year, month):
     )
 
 @app.route('/submit_weekday_schedule/<int:user_id>-<int:year>-<int:month>', methods=['POST'])
+#@login_required
 #入力データ処理（曜日スケジュール用）
 def submit_weekday_schedule(user_id, year, month):
     sche_name_temp = request.form.getlist('schedule_name')
@@ -156,6 +265,8 @@ def edit_schedule(sche_name, user_id, years, months, dates, start_hour, start_mi
         id_search.append(schedule_id)
         start_time = start_hour[i]*3600 + start_minute[i]*60
         end_time = end_hour[i]*3600 + end_minute[i]*60
+        if end_time > 86400:
+            end_time = 86400
         new_schedules.append((schedule_id, sche_name[i], user_id, years[i], months[i], dates[i], start_time, end_time))
     #登録処理へリストを渡す
-    db.registar_schedule(new_schedules, delete_schedules)
+    schedule_system_database.registar_schedule(new_schedules, delete_schedules)

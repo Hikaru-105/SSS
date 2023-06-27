@@ -42,3 +42,30 @@ table{
     width: auto;
     display: inline;
 }
+
+h1{
+  text-align: center;
+}
+label{
+  display: inline-block;
+  text-align: right;
+  width: 180px;
+}
+div { text-align : center ; }
+.error {
+  font-size: 12px;
+  color: red;
+  display: none;
+}
+.error2 {
+  font-size: 12px;
+  color: red;
+}
+input:invalid + .error  {
+  display: block;
+}
+.number::-webkit-inner-spin-button,
+.number::-webkit-outer-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0 !important;
+}
