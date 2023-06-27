@@ -1,3 +1,5 @@
+from SSS import app
+
 from flask import Flask
 from flask import render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
@@ -11,9 +13,6 @@ import pytz
 
 import re
 
-app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///user.db'
-app.config["SECRET_KEY"] = os.urandom(24)
 db = SQLAlchemy(app)
 
 login_manager = LoginManager()
@@ -37,8 +36,7 @@ def schedule():
     if request.method == 'GET':
         posts  = User.query.all()
         current_user.id = f'{current_user.id:08}'
-        m=""
-        return render_template('schedule.html', posts=posts, current_user=current_user, m=m)
+        return render_template('schedule.html', posts=posts, current_user=current_user)
 
 @app.route("/signup", methods=['GET', 'POST'])
 def signup():
@@ -52,7 +50,7 @@ def signup():
             e = 'パスワードは16文字以内にしてください'
             return render_template('signup.html', e=e)
         r = isalnum_ascii(password)
-        if(f'{password} isalnum_ascii: {r}'):
+        if(f'{password} isalnum_ascii: {r}' == False):
             e = 'パスワードは半角英数にしてください'
             return render_template('signup.html', e=e)
         user = User(username=username, password=generate_password_hash(password, method='sha256'))
