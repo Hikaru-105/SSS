@@ -56,7 +56,7 @@ def signup():
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
-        password = request.form.get('re_password')
+        re_password = request.form.get('re_password')
         if(len(username) > 16):
             e = 'ユーザ名は16文字以内にしてください'
             return render_template('signup.html', e=e)
@@ -64,6 +64,8 @@ def signup():
             e = 'パスワードは16文字以内にしてください'
             return render_template('signup.html', e=e)
         if(password!=re_password):
+            print(type(password))
+            print(type(re_password))
             e = 'パスワードと確認用パスワードが一致していません'
             return render_template('signup.html', e=e)
         if(isalnum_ascii(password) == False):
