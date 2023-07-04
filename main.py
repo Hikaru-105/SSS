@@ -16,7 +16,7 @@ import os
 
 import re
 
-app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///user.db'
+app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///database.db'
 app.config["SECRET_KEY"] = os.urandom(24)
 
 db = SQLAlchemy(app)
@@ -109,10 +109,11 @@ def logout():
     logout_user()
     return redirect('/login')
 
-#ルーティング
+
+#月カレンダー表示
 @app.route('/monthcalendar/<int:year>-<int:month>')
 #ログイン要求
-#@login_required
+@login_required
 #カレンダー表示
 def monthcalendar(year, month):
     user_id = current_user.id
@@ -138,7 +139,7 @@ def monthcalendar(year, month):
 
 #スケジュール編集する日付を選択
 @app.route('/edit/<int:year>-<int:month>-<int:date>')
-#@login_required
+@login_required
 def edit(year,month,date):
     #結合テストするときにログイン情報から取得
     user_id = current_user.id
@@ -162,7 +163,7 @@ def edit(year,month,date):
 
 #入力データ処理
 @app.route('/submit_schedule/<int:user_id>-<int:year>-<int:month>-<int:date>', methods=['POST'])
-#@login_required
+@login_required
 def submit_schedule(user_id, year, month, date):
     #入力データをリストに変換
     sche_name = request.form.getlist('schedule_name')
@@ -184,7 +185,7 @@ def submit_schedule(user_id, year, month, date):
     return redirect(url_for('edit', year=year, month=month, date=date))
 
 @app.route('/edit_weekday/<int:year>-<int:month>')
-#@login_required
+@login_required
 def edit_weekday(year, month):
     #結合テストするときはログイン情報から取得
     user_id = current_user.id
@@ -196,7 +197,7 @@ def edit_weekday(year, month):
     )
 
 @app.route('/submit_weekday_schedule/<int:user_id>-<int:year>-<int:month>', methods=['POST'])
-#@login_required
+@login_required
 #入力データ処理（曜日スケジュール用）
 def submit_weekday_schedule(user_id, year, month):
     sche_name_temp = request.form.getlist('schedule_name')

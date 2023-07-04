@@ -38,11 +38,17 @@ table{
 #linkmenu{
   font-size: 300%;
 }
-#time_input{
-    width: auto;
-    display: inline;
+.parent{
+  text-align: left;
 }
-
+#time_input{
+  display: inline;
+  text-align: left;
+}
+#schedules{
+  display: inline;
+  text-align: left;
+}
 h1{
   text-align: center;
 }
