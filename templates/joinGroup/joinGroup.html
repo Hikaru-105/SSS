@@ -19,6 +19,42 @@
 </script>
 
 <style>
+    .body {
+        background: linear-gradient(90deg, #A0FFFF, #00AFFF);
+    }
+
+    .form {
+        background-color: #FFFFFF;
+        margin: auto;
+        text-align: center;
+        width: 400px;
+        box-shadow: 5px 5px 5px #707070;
+    }
+
+    .button {
+        width: 100px;
+        height: 40px;
+        outline: none;
+        color: #FFFFFF;
+        background-color: #00BFFF;
+    }
+
+    #group_name {
+        width: 300px;
+        height: 30px;
+        font-size: 120%;
+        outline: solid;
+        outline-width: 1px;
+    }
+
+    #group_pass {
+        width: 300px;
+        height: 30px;
+        font-size: 120%;
+        outline: solid;
+        outline-width: 1px;
+    }
+
     .center {
         text-align: center;
     }
@@ -31,13 +67,13 @@
     <title>グループ加入</title>
 </head>
 
-<body>
+<body class="body">
     {% autoescape False %}
     {{ notExist }}
     {% endautoescape %}
-    <!-- action="/joinGroup" -->
     <h1 class="center">グループ加入</h1>
-    <form action="/" method="post" class="center">
+    <!-- action="/joinGroup" -->
+    <form action="/" method="post" class="form">
         <br>
         <div>
             グループ名
@@ -54,8 +90,9 @@
         </div>
         <br>
         <div>
-            <button type="submit" onclick="groupConf()">加入する</button>
+            <button type="submit" class="button" onclick="groupConf()">加入する</button>
         </div>
+        <br>
         <input type="hidden" id="userInput" name="userInput" value="">
     </form>
 </body>
