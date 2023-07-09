@@ -1,6 +1,6 @@
 import schedule_system_database
 import searchGroup, updateGroup
-from flask import render_template, redirect, request, url_for
+from flask import Flask, render_template, redirect, request, url_for
 
 import datetime
 import calendar
