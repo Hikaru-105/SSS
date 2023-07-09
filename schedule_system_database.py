@@ -10,19 +10,6 @@ def create_schedule_table():
     cur.execute("CREATE TABLE IF NOT EXISTS schedule (schedule_id, schedule_name, user_id, year, month, date, start_time, end_time)")
     cur.execute("CREATE TABLE IF NOT EXISTS 'group' (group_id, group_name, keyword, leader)")
     cur.execute("SELECT schedule_id FROM schedule")
-"""
-    data = cur.fetchall()
-    #データベースが空ならば仮データ登録
-    if not data:
-        cur.execute("INSERT INTO schedule VALUES(0,'unused',0,2023,6,1,0,7200)")
-        cur.execute("INSERT INTO schedule VALUES(1,'unused',0,2023,6,1,54000,81000)")
-        cur.execute("INSERT INTO schedule VALUES(2,'unused',0,2023,6,1,18000,39600)")
-        cur.execute("INSERT INTO schedule VALUES(3,'unused',0,2023,6,1,14400,16200)")
-        cur.execute("INSERT INTO schedule VALUES(4,'unused',1,2023,6,1,0,1800)")
-        cur.execute("INSERT INTO schedule VALUES(5,'unused',1,2023,6,1,0,1800)")
-        con.commit()
-    cur.execute("SELECT group_id FROM 'group'")
-"""
     data = cur.fetchall()
     #データベースが空ならば仮データ登録
     if not data:
