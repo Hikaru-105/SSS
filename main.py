@@ -1,6 +1,5 @@
-from SSS import app
-from SSS import schedule_system_database
-from SSS import searchGroup, updateGroup
+import schedule_system_database
+import searchGroup, updateGroup
 from flask import render_template, redirect, request, url_for
 
 import datetime
@@ -16,6 +15,12 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import os
 
 import re
+
+from waitress import serve
+
+schedule_system_database.create_schedule_table()
+
+app = Flask(__name__)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///' + os.path.join(os.path.dirname(__file__), 'instance', 'database.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -547,3 +552,9 @@ def joinGroupAuth(group_id, keyword):
         updateGroup.updateGroup(user_id, group_id)
         today = datetime.datetime.now()
         return redirect(url_for('Gcalendar', year=today.year, month=today.month))
+
+
+
+if __name__ == "__main__":
+    #app.run('0.0.0.0',port=5000)
+    serve(app, host='0.0.0.0', port=51080)
