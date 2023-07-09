@@ -9,7 +9,7 @@ import sqlite3
 #                 else                       : False
 ###################################################################################################
 
-DATABASE = 'instance/database.db'
+DATABASE = 'database.db'
 
 def searchGroup(group_id, keyword):
     # 登録済みのGroupIDリストを作成

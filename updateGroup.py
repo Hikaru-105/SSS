@@ -8,7 +8,7 @@ import sqlite3
 # Return..........なし
 ###################################################################################################
 
-DATABASE = 'instance/database.db'
+DATABASE = 'database.db'
 
 def updateGroup(user_id, group_id):
     con = sqlite3.connect(DATABASE)
