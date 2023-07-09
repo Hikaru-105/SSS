@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSS</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    <script>
+        window.addEventListener('DOMContentLoaded', function(){
+            let btn_passview = document.getElementById("btn_passview");
+            let input_pass = document.getElementById("input_pass");
+            if (typeof(document.getElementById("input_pass2")) != "undefined"){
+                let input_pass2 = document.getElementById("input_pass2");
+            }
+            btn_passview.addEventListener("click", (e)=>{
+                e.preventDefault();
+                if( input_pass.type == 'password' ) {
+                    input_pass.type = 'text';
+                    if (typeof(input_pass2) != "undefined"){
+                        input_pass2.type = 'text';
+                    }
+                    btn_passview.textContent = 'パスワード非表示';
+                } else {
+                    input_pass.type = 'password';
+                    if (typeof(input_pass2) != "undefined"){
+                        input_pass2.type = 'password';
+                    }
+                    btn_passview.textContent = 'パスワード表示';
+                }
+            });
+        });
+    </script>
+    <script>
+        function CheckPassword(input_pass){
+            // 入力値取得
+            var input1 = input_pass.value;
+            var input2 = input_pass2.value;
+            // パスワード比較
+            if(input1 == input2){
+                input_pass2.setCustomValidity('');
+            }else{
+                input_pass2.setCustomValidity("入力値が一致しません。");
+            }
+        }
+        function CheckPassword2(input_pass2){
+            // 入力値取得
+            var input1 = input_pass.value;
+            var input2 = input_pass2.value;
+            // パスワード比較
+            if(input1 != input2){
+                input_pass2.setCustomValidity("入力値が一致しません。");
+            }else{
+                input_pass2.setCustomValidity('');
+            }
+        }
+    </script>
+</head>
+<body class="body">
+    {% block content %}
+    {% endblock %}
+</body>
+</html>
