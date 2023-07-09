@@ -1,6 +1,6 @@
 import sqlite3
 
-DATABASE = 'instance/database.db'
+DATABASE = 'database.db'
 
 def create_schedule_table():
     #データベース接続
