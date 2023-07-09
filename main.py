@@ -42,7 +42,7 @@ with app.app_context():
     db.create_all()
 
 #データベースファイルの位置
-DATABASE = 'SSS/instance/database.db'
+DATABASE = 'instance/database.db'
 
 @login_manager.user_loader
 def load_user(user_id):
