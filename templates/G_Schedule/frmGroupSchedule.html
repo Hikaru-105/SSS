@@ -12,7 +12,7 @@
     {% if group_id == 0 %}
       <h2 align=center>グループ未所属</h2><br>
     {% else %}
-      <h2 align=center>あなたのグループは{{group_name}}です。 ID：{{"%08d"|format(group_id)}}</h2>
+      <h2 align=center>あなたのグループは{{group_name}}です。 グループID：{{"%08d"|format(group_id)}}</h2>
     {% endif %}
     {% if month==1 %}
       <h2 align=center>
@@ -47,7 +47,7 @@
         {% else %}
           {% if day_upper_left + day + week == cl[day_upper_left + day + week] %}
             <!--その月のどの日にちにデータが入っているか、それが日付と一致したら色をつけたセルを作る-->
-            <td align="center" bgcolor="#B8B8F8">
+            <td align="center" bgcolor="#D0D0F8">
               <a href="{{url_for('Gtimeline',year=year,month=month,d=day_upper_left + day + week)}}">{{day_upper_left+day+week}}</a>
               {% for rt in RT[day_upper_left+day+week] %}
               <h5>{{rt}}</h5>
@@ -69,7 +69,7 @@
   <footer>
     <ul>
       <li id="linkmenu"><a href="{{url_for('makeGroup')}}">グループ作成</a></li>
-      <li id="linkmenu"><a href="joingroup">グループ加入</a></li>
+      <li id="linkmenu"><a href="{{url_for('joinGroupUI')}}">グループ加入</a></li>
       <li id="linkmenu"><a href="option">設定</a></li>
     </ul>
   </footer>

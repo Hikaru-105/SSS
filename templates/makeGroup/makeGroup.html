@@ -9,7 +9,7 @@
     <h1>新規グループを作成</h1>
     <br>
     <!---グループカレンダー用に書き換える--->
-    <h2><a href="{{url_for('monthcalendar', year=year, month=month)}}">グループカレンダーに戻る</a></h2>
+    <h2><a href="{{url_for('Gcalendar', year=year, month=month)}}">グループカレンダーに戻る</a></h2>
     <div class="parent">
       <form action="{{url_for('submit_new_group')}}" method="post">
         グループ名<br>

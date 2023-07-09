@@ -1,5 +1,6 @@
 from SSS import app
 from SSS import schedule_system_database
+from SSS import searchGroup, updateGroup
 from flask import render_template, redirect, request, url_for
 
 import datetime
@@ -325,7 +326,7 @@ def submit_new_group():
         overlap = group_id in id_search
     new_group = (group_id, group_name, keyword, leader)
     schedule_system_database.registar_group(new_group, current_user.id)
-    return redirect(url_for('monthcalendar', year=today.year, month=today.month))
+    return redirect(url_for('Gcalendar', year=today.year, month=today.month))
 
 
 #グループスケジュールの表示関連
@@ -490,3 +491,59 @@ def Ctimeline(db_schedule, d):
     for i in range(len(schedule)):
         schedule_bit=schedule_bit | change_bit(schedule[i][6],schedule[i][7])
     return schedule_bit
+
+#グループ参加関連
+
+###################################################################################################
+# Function Name...joinGroupUI
+# Designer........越村太一
+# Modifier........渡邉優太
+# Function........グループ名、合言葉の入力を受け取り認証要求をする
+# Return..........userInput == "True" : 認証要求
+#                 else                : グループ加入画面を表示する
+###################################################################################################
+@app.route("/joinGroup", methods=["GET", "POST"])  # @join.route("/joinGroup")
+def joinGroupUI():
+    today = datetime.datetime.now()
+    c_group_id = current_user.group
+    if request.method == "GET":
+        group_id = ""
+        keyword = ""
+        url = "joinGroup/joinGroup.html"
+
+    if request.method == "POST":
+        group_id = int(request.form.get("group_id"))
+        keyword = request.form.get("keyword")
+        if group_id == "" or keyword == "":
+            url = "joinGroup/joinGroup.html"
+        else:
+            userInput = request.form.get("userInput")
+            if userInput == "True":
+                return redirect(url_for("joinGroupAuth", group_id=group_id, keyword=keyword))
+            elif userInput == "False":
+                url = "joinGroup/joinGroup.html"
+
+    return render_template(url, group_id=group_id, keyword=keyword, c_group_id=c_group_id, year=today.year, month=today.month, notExist="")
+
+
+###################################################################################################
+# Function Name...joinGroupAuth
+# Designer........越村太一
+# Function........グループ名、合言葉をsearchGroupへ渡し、返り値によって加入するか判定する
+# Return..........searchGroupの返り値が0 : グループ加入画面を表示する
+#                 else                   : グループスケジュール画面表示する
+###################################################################################################
+@app.route("/joinGroup/auth/<int:group_id>/<string:keyword>")
+def joinGroupAuth(group_id, keyword):
+    today = datetime.datetime.now()
+    c_group_id = current_user.group
+    existence = searchGroup.searchGroup(group_id, keyword)
+    if not existence:
+        url = "joinGroup/joinGroup.html"
+        script = "<script>alert('入力されたグループは見つかりませんでした');</script>"
+        return render_template(url, group_id=group_id, keyword=keyword, c_group_id=c_group_id, year=today.year, month=today.month, notExist=script)
+    else:
+        user_id = current_user.id
+        updateGroup.updateGroup(user_id, group_id)
+        today = datetime.datetime.now()
+        return redirect(url_for('Gcalendar', year=today.year, month=today.month))
