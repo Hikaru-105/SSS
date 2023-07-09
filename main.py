@@ -16,13 +16,16 @@ import os
 
 import re
 
-app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///database.db'
+app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:////SSS/database.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_ECHO']=True
 app.config["SECRET_KEY"] = os.urandom(24)
 
 db = SQLAlchemy(app)
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    group = db.Column(db.Integer, nullable=False, unique=False, primary_key=False)
     username = db.Column(db.String(16), nullable=False, unique=False, primary_key=False)
     password = db.Column(db.String(16))
 
@@ -42,7 +45,12 @@ def load_user(user_id):
 def isalnum_ascii(s):
     return True if s.isalnum() and s.isascii() else False
 
-@app.route("/", methods=['GET', 'POST'])
+
+@app.route("/")
+def to_login_page():
+    return redirect(url_for('login'))
+
+@app.route("/authenticated", methods=['GET', 'POST'])
 @login_required
 def schedule():
     if request.method == 'GET':
@@ -57,6 +65,7 @@ def signup():
         username = request.form.get('username')
         password = request.form.get('password')
         re_password = request.form.get('re_password')
+        group = 0
         if(len(username) > 16):
             e = 'ユーザ名は16文字以内にしてください'
             return render_template('signup.html', e=e)
@@ -64,19 +73,17 @@ def signup():
             e = 'パスワードは16文字以内にしてください'
             return render_template('signup.html', e=e)
         if(password!=re_password):
-            print(type(password))
-            print(type(re_password))
             e = 'パスワードと確認用パスワードが一致していません'
             return render_template('signup.html', e=e)
         if(isalnum_ascii(password) == False):
             e = 'パスワードは半角英数にしてください'
             return render_template('signup.html', e=e)
-        user = User(username=username, password=generate_password_hash(password, method='sha256'))
+        user = User(username=username, password=generate_password_hash(password, method='sha256'), group=group)
 
         db.session.add(user)
         db.session.commit()
         login_user(user)
-        return redirect('/')
+        return redirect(url_for('schedule'))
     else:
         return render_template('signup.html')
 
@@ -96,7 +103,7 @@ def login():
         user = User.query.filter_by(id=id).first()
         if check_password_hash(user.password, password):
             login_user(user)
-            return redirect('/')
+            return redirect(url_for('schedule'))
         else:
             e = 'IDまたはパスワードが間違っています'
             return render_template('login.html', e=e)
@@ -117,7 +124,7 @@ def logout():
 #カレンダー表示
 def monthcalendar(year, month):
     user_id = current_user.id
-    #結合テストではログイン後に取得したtoday = datetime.datetime.now()からyearとmonthを持ってくる。
+    group = current_user.group
     #月初めの曜日の算出[0:"月",1:"火",2:"水",3:"木",4:"金",5:"土",6:"日"]
     month_first_day = datetime.datetime(year, month,1)
     #負の数も考慮したカレンダーの一番左上に来る数字を計算
@@ -131,6 +138,7 @@ def monthcalendar(year, month):
     return render_template(
         'I_Schedule/monthcalendar.html',
         user_id = user_id,
+        group = group,
         year = year,
         month = month,
         month_last_day = month_last_day,
@@ -273,3 +281,28 @@ def edit_schedule(sche_name, user_id, years, months, dates, start_hour, start_mi
         new_schedules.append((schedule_id, sche_name[i], user_id, years[i], months[i], dates[i], start_time, end_time))
     #登録処理へリストを渡す
     schedule_system_database.registar_schedule(new_schedules, delete_schedules)
+
+@app.route('/groupcalendar/<int:year>-<int:month>')
+@login_required
+def group(arg):
+    user_id = current_user.id
+    #月初めの曜日の算出[0:"月",1:"火",2:"水",3:"木",4:"金",5:"土",6:"日"]
+    group_id = 0
+    #仮グループID
+    month_first_day = datetime.datetime(year, month,1)
+    #負の数も考慮したカレンダーの一番左上に来る数字を計算
+    day_upper_left = month_first_day.weekday() * -1
+    if day_upper_left == -6:
+        day_upper_left = 1
+    #月の最終日を計算
+    month_last_day = calendar.monthrange(year, month)[1]
+
+    #返り値を渡すhtmlファイルと引数を指定
+    return render_template(
+        'I_Schedule/monthcalendar.html',
+        user_id = user_id,
+        year = year,
+        month = month,
+        month_last_day = month_last_day,
+        day_upper_left = day_upper_left
+    )

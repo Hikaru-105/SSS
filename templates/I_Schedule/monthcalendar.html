@@ -44,7 +44,7 @@
     <div class="wrapper">
       <header>
         <h1>スケジュールシェアリングシステム</h1>
-        <h1>あなたのユーザーID：{{"%08d"|format(user_id)}}</h1>
+        <h1>あなたのユーザーID：{{"%08d"|format(user_id)}} あなたのGROUP ID: {{"%08d"|format(group)}}</h1>
         {% if month == 1 %}
           <h1>　<a href="{{url_for('monthcalendar', year=year-1, month=12)}}">＜</a>　{{year}}年 {{month}}月　<a href="{{url_for('monthcalendar', year=year, month=month+1)}}">＞</a>　</h1>
         {% elif month == 12 %}
@@ -73,7 +73,7 @@
       </table>
       <footer>
         <ul>
-          <li id="linkmenu"><a href="group">グループ</a></li>
+          <li id="linkmenu"><a href="{{url_for('group', year=year, month=month)}}">グループ</a></li>
           <li id="linkmenu"><a href="{{url_for('edit_weekday', year=year, month=month)}}">曜日スケジュール</a></li>
           <li id="linkmenu"><a href="option">設定</a></li>
         </ul>
