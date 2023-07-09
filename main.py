@@ -16,9 +16,9 @@ import os
 
 import re
 
-app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:////SSS/database.db'
+app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///' + os.path.join(os.path.dirname(__file__), 'instance', 'database.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_ECHO']=True
+app.config['SQLALCHEMY_ECHO'] = True
 app.config["SECRET_KEY"] = os.urandom(24)
 
 db = SQLAlchemy(app)
@@ -184,8 +184,6 @@ def submit_schedule(user_id, year, month, date):
     dates = [date]
     #削除するリストは変換処理が無いためデータベースに送るためのタプルに変換
     delete_schedules = tuple(map(int, request.form.getlist('delete_this_schedule')))
-    print("in submission sector")
-    print(delete_schedules)
 
     #スケジュールデータ変換処理に入力データを送る
     edit_schedule(sche_name, user_id, years, months, dates, start_hour, start_minute, end_hour, end_minute, delete_schedules)
@@ -306,3 +304,49 @@ def group(arg):
         month_last_day = month_last_day,
         day_upper_left = day_upper_left
     )
+
+@app.route('/makeGroup')
+@login_required
+def makeGroup():
+    user_id = current_user.id
+    group = current_user.group
+    today = datetime.datetime.now()
+    if group == 0:
+        return render_template(
+            'makeGroup/makeGroup.html',
+            user_id = user_id,
+            group = group,
+            year=today.year,
+            month=today.month
+        )
+    else:
+        return render_template(
+            'makeGroup/makeGroup_already_joined.html',
+            year=today.year,
+            month=today.month
+        )
+
+
+
+@app.route('/submit_new_group', methods=['POST'])
+@login_required
+def submit_new_group():
+    today = datetime.datetime.now()
+    leader = current_user.id
+    group_name = request.form.get('group_name')
+    keyword = request.form.get('keyword')
+    group_id = 0
+    con = sqlite3.connect(DATABASE)
+    cur = con.cursor()
+    cur.execute("SELECT group_id FROM 'group' ORDER BY group_id")
+    id_search = cur.fetchall()
+    con.close()
+    id_search = [x[0] for x in id_search]
+    #スケジュールIDが既存のものと重複しないように生成し、スケジュールのタプルをリストに追加
+    overlap = True
+    while overlap:
+        group_id = random.randint(0, 99999999)
+        overlap = group_id in id_search
+    new_group = (group_id, group_name, keyword, leader)
+    schedule_system_database.registar_group(new_group, current_user.id)
+    return redirect(url_for('monthcalendar', year=today.year, month=today.month))
