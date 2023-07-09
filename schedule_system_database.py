@@ -46,6 +46,7 @@ def registar_schedule(new_schedules, delete_schedules):
     con.commit()
     con.close()
 
+#新規グループを登録
 def registar_group(new_group, user_id):
     con = sqlite3.connect(DATABASE)
     cur = con.cursor()

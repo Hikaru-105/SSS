@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>
+        <a href="{{url_for('Gcalendar', year=year, month=month)}}">カレンダーに戻る</a>
+    </h2>
+    <h1>{{year}}年{{month}}月{{d}}日</h1>
+
+    <table width="5760px">
+        <tr>
+            {% for i in range(10) %}
+                <td width="500000px" align=center>0{{i}}:00</td>
+                <td width="500000px" align=center>0{{i}}:30</td>
+            {% endfor %}
+            {% for i in range(14) %}
+                <td width="500000px" align=center>{{i+10}}:00</td>
+                <td width="500000px" align=center>{{i+10}}:30</td>
+            {% endfor %}
+            <td width="500000px" align=center>24:00</td>
+        </tr>
+    </table>
+    <!--データ格納-->
+    <table width="5760px" border="1">
+        <tr>
+            <td width="200000px" bgcolor="#000000">
+                <h6></h6>
+            </td>
+            {% for i in range(48) %}
+                {% if schedule_bit[i+2]=="0" %}
+                <td width="500000px" bgcolor="#8484ee">
+                    <h5>　</h5>
+                </td>
+                {% else %}
+                <td width="500000px">
+                    <h5>　</h5>
+                </td>
+                {% endif %}
+            {% endfor %}
+            <td width="200000px" bgcolor="#000000">
+                <h6></h6>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

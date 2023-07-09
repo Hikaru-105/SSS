@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GroupSchedule</title>
+  <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+</head>
+<body>
+  <header>
+    <h1 align=center>グループスケジュールカレンダー</h1><br>
+    {% if group_id == 0 %}
+      <h2 align=center>グループ未所属</h2><br>
+    {% else %}
+      <h2 align=center>あなたのグループは{{group_name}} ID：{{"%08d"|format(group_id)}}</h2>
+    {% endif %}
+    {% if month==1 %}
+      <h2 align=center>
+        <a href="{{url_for('Gcalendar',year=year-1,month=12)}}"> < </a>
+        {{year}}年{{month}}月
+        <a href="{{url_for('Gcalendar',year=year,month=month+1)}}"> > </a>
+      </h2>
+    {% elif month==12 %}
+      <h2 align=center>
+        <a href="{{url_for('Gcalendar',year=year,month=month-1)}}"> < </a>
+        {{year}}年{{month}}月
+        <a href="{{url_for('Gcalendar',year=year+1,month=1)}}"> > </a></h2>
+    {% else %}
+      <h2 align=center>
+        <a href="{{url_for('Gcalendar',year=year,month=month-1)}}"> < </a>
+        {{year}}年{{month}}月
+        <a href="{{url_for('Gcalendar',year=year,month=month+1)}}"> > </a></h2>
+    {% endif %}
+  </header>
+  <table width="100%" height="100%" border="1">
+  <tr>
+      {% for weekday in ["日","月","火","水","木","金","土"] %}
+        <th>{{weekday}}曜日</th>
+      {% endfor %}
+    </tr>
+    {% for week in [0,7,14,21,28,35] %}
+    <tr>
+      <!--一週間ごとに日にちを調べる-->
+      {% for day in range(7) %}
+        {% if (day_upper_left + day + week) < 1 or (day_upper_left + day + week) > month_last_day %}
+          <td></td>
+        {% else %}
+          {% if day_upper_left + day + week == cl[day_upper_left + day + week] %}
+            <!--その月のどの日にちにデータが入っているか、それが日付と一致したら色をつけたセルを作る-->
+            <td align="center" bgcolor="#8484ee">
+              <a href="{{url_for('Gtimeline',year=year,month=month,d=day_upper_left + day + week)}}">{{day_upper_left+day+week}}</a>
+              {% for rt in RT[day_upper_left+day+week] %}
+              <h5>{{rt}}</h5>
+                {% endfor %}
+            </td>
+          {% else %}
+            <td align="center">
+              <a href="{{url_for('Gtimeline',year=year,month=month,d=day_upper_left + day + week)}}">{{day_upper_left+day+week}}</a>
+              {% for rt in RT[day_upper_left+day+week] %}
+              <h5>{{rt}}</h5>
+                {% endfor %}
+            </td>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+    </tr>
+    {% endfor %}
+  </table>
+  <footer>
+    <ul>
+      <li id="linkmenu"><a href="{{url_for('makeGroup')}}">グループ作成</a></li>
+      <li id="linkmenu"><a href="joingroup">グループ加入</a></li>
+      <li id="linkmenu"><a href="option">設定</a></li>
+    </ul>
+  </footer>
+</body>
+</html>

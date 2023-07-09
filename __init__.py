@@ -5,4 +5,3 @@ import flask_sqlalchemy
 
 from SSS import schedule_system_database
 schedule_system_database.create_schedule_table()
-import os
