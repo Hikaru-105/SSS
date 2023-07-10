@@ -1,18 +1,26 @@
 {% extends "base.html" %}
 {% block content %}
-    <h1>新規ユーザー登録画面</h1>
+    <h1 class="h1">新規ユーザー登録画面</h1>
     <form method="POST">
-        <div><label for="">新規ユーザー名</label>
-        <input type="text" name="username" required>
-        <div class="error">※ 入力必須です</div></div>
-        <div><label for="">新規パスワード</label>
-        <input type="password" id="input_pass" name="password" required>
-        <div class="error">※ 入力必須です</div></div>
-        <div><label for="">新規パスワード(確認用)</label>
-        <input type="password" id="input_pass2" name="re_password" oninput="CheckPassword(this)" required>
-        <div class="error">※ 新規パスワードと一致させてください</div></div>
-        <div><button id="btn_passview">パスワード表示</button></div>
-        <div><input type="submit" value="新規登録"></div>
-        <div class="error2">{{ e }}</div>
+        <div class="box">
+            <div>
+                <label for="">新規ユーザー名</label>
+                <input type="text" name="username" required>
+                <div class="error">※ 入力必須です</div>
+            </div>
+            <div>
+                <label for="">新規パスワード</label>
+                <input type="password" id="input_pass" name="password" oninput="CheckPassword(this)" required>
+                <div class="error">※ 入力必須です</div>
+            </div>
+            <div>
+                <label for="">新規パスワード(確認用)</label>
+                <input type="password" id="input_pass2" name="re_password" oninput="CheckPassword2(this)" required>
+                <div class="error">※ 新規パスワードと一致させてください</div>
+            </div>
+            <div class="btn"><button id="btn_passview">パスワード表示</button></div>
+            <div><input class="trans" type="submit" value="新規登録"></div>
+            <div class="error2">{{ e }}</div>
+        </div>
     </form>
 {% endblock %}

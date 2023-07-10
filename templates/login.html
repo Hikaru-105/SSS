@@ -1,16 +1,23 @@
 {% extends "base.html" %}
 {% block content %}
-    <h1>ログイン画面</h1>
+    <h1 class="h1">ログイン画面</h1>
     <form method="POST">
-        <div><label for="">ID</label>
-        <input type="number" class=number name="id" required>
-        <div class="error">※ 入力必須です</div></div>
-        <div><label for="">パスワード</label>
-        <input type="password" id="input_pass" name="password" required>
-        <div class="error">※ 入力必須です</div></div>
-        <div><button id="btn_passview">パスワード表示</button></div>
-        <div><input type="submit" value="ログイン"></div>
-        <div><a href="/signup" role="button">新規登録はこちら</a></div>
-        <div class="error2">{{ e }}</div>
+        <div class="box">
+            <div>
+                <label for="">ID</label>
+                <input type="number" class=number name="id" required>
+                <div class="error">※ 入力必須です</div>
+            </div>
+            <div>
+                <label for="">パスワード</label>
+                <input type="password" id="input_pass" name="password" required>
+                <div class="error">※ 入力必須です</div>
+            </div>
+            <div class="btn"><button id="btn_passview">パスワード表示</button></div>
+            <div><input class="trans" type="submit" value="ログイン"></div>
+            <div class="btn"><a href="/signup" role="button">新規登録はこちら</a></div>
+            <div class="error2">{{ e }}</div>
+            
+        </div>
    </form>
 {% endblock %}

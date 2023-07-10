@@ -38,20 +38,11 @@ table{
 #linkmenu{
   font-size: 300%;
 }
-.parent{
-  text-align: left;
-}
 #time_input{
-  display: inline;
-  text-align: left;
+    width: auto;
+    display: inline;
 }
-#schedules{
-  display: inline;
-  text-align: left;
-}
-h1{
-  text-align: center;
-}
+
 .h1{
   text-align: center;
 }
@@ -92,15 +83,14 @@ h1{
 .btn { text-align : center ; }
 .error {
   font-size: 12px;
-  color: red;
-  display: none;
+  color: white;
 }
 .error2 {
   font-size: 12px;
   color: red;
 }
 input:invalid + .error  {
-  display: block;
+  color: red;
 }
 .number::-webkit-inner-spin-button,
 .number::-webkit-outer-spin-button {
