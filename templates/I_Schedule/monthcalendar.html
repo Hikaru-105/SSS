@@ -21,7 +21,7 @@
           <h1>　<a href="{{url_for('monthcalendar', year=year, month=month-1)}}">＜</a>　{{year}}年 {{month}}月　<a href="{{url_for('monthcalendar', year=year, month=month+1)}}">＞</a>　</h1>
         {% endif %}
       </header>
-      <table border="1" class="shade">
+      <table border="1" class="table">
         <tr>
           {% for weekday in ["日","月","火","水","木","金","土"] %}
             <th>{{weekday}}曜日</th>
