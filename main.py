@@ -463,7 +463,7 @@ def Gtimeline(year,month,d):
 
     schedule_bit=list(format(Ctimeline(db_schedule, d), '#050b'))
     if group_id == 0:
-        schedule_bit = list("0b00000000000000000000000000000000000000000000000")
+        schedule_bit = list("0b000000000000000000000000000000000000000000000000")
 
     return render_template('/G_Schedule/Timeline.html',
                            year=year,
