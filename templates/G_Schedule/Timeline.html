@@ -5,13 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<body>
-    <h2>
+<body class="body">
+    <div class="shade">
+      <h2>
         <a href="{{url_for('Gcalendar', year=year, month=month)}}">カレンダーに戻る</a>
-    </h2>
-    <h1>{{year}}年{{month}}月{{d}}日</h1>
+      </h2>
+      <h1>{{year}}年{{month}}月{{d}}日</h1>
+    </div>
 
-    <table width="5760px">
+    <table width="5760px" class="shade">
         <tr>
             {% for i in range(10) %}
                 <td width="500000px" align=center>0{{i}}:00</td>
@@ -25,7 +27,7 @@
         </tr>
     </table>
     <!--データ格納-->
-    <table width="5760px" border="1">
+    <table width="5760px" border="1" class="shade">
         <tr>
             <td width="200000px" bgcolor="#000000">
                 <h6></h6>

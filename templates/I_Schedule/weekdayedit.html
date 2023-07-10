@@ -5,35 +5,37 @@
     <title>SSS | 曜日スケジュール登録</title>
     <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
   </head>
-  <body>
-    <h1>{{year}}年 {{month}}月の曜日スケジュール</h1>
-    <h2><a href="{{url_for('monthcalendar', year=year, month=month)}}">カレンダーに戻る</a></h2>
-    <form action="{{url_for('submit_weekday_schedule',user_id=user_id , year=year, month=month)}}" method="post">
-      {% for weekday in ["日","月","火","水","木","金","土"] %}
+  <body class="body">
+    <div class="shade">
+      <h1>{{year}}年 {{month}}月の曜日スケジュール</h1>
+      <h2><a href="{{url_for('monthcalendar', year=year, month=month)}}">カレンダーに戻る</a></h2>
+      <form action="{{url_for('submit_weekday_schedule',user_id=user_id , year=year, month=month)}}" method="post">
+        {% for weekday in ["日","月","火","水","木","金","土"] %}
         {{weekday}}曜日　スケジュール名<br>
         <input type="text" name="schedule_name"><br>
         <select name="start_hour">
           {% for i in range(24) %}
-            <option value="{{i}}">{{ "%02d" | format(i)}}</option>
+          <option value="{{i}}">{{ "%02d" | format(i)}}</option>
           {% endfor %}
         </select>時
         <select name="start_minute">
           {% for i in [0,30] %}
-            <option value="{{i}}">{{ "%02d" | format(i)}}</option>
+          <option value="{{i}}">{{ "%02d" | format(i)}}</option>
           {% endfor %}
         </select>分～
         <select name="end_hour">
           {% for i in range(24) %}
-            <option value="{{i}}">{{ "%02d" | format(i)}}</option>
+          <option value="{{i}}">{{ "%02d" | format(i)}}</option>
           {% endfor %}
         </select>時
         <select name="end_minute">
           {% for i in [0,30] %}
-            <option value="{{i}}">{{ "%02d" | format(i)}}</option>
+          <option value="{{i}}">{{ "%02d" | format(i)}}</option>
           {% endfor %}
         </select>分<br>
-      {% endfor %}
-      <input type="submit" name="登録">
-    </form>
+        {% endfor %}
+        <input type="submit" name="登録">
+      </form>
+    </div>
   </body>
 </html>

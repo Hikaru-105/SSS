@@ -6,11 +6,11 @@
   <title>GroupSchedule</title>
   <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
 </head>
-<body>
-  <header>
+<body class="body">
+  <header class="shade">
     <h1 align=center>グループスケジュールカレンダー</h1>
     {% if group_id == 0 %}
-      <h2 align=center>グループ未所属</h2><br>
+      <h2 align=center>グループ未所属</h2>
     {% else %}
       <h2 align=center>あなたのグループは{{group_name}}です。 グループID：{{"%08d"|format(group_id)}}</h2>
     {% endif %}
@@ -32,7 +32,7 @@
         <a href="{{url_for('Gcalendar',year=year,month=month+1)}}"> > </a></h2>
     {% endif %}
   </header>
-  <table width="100%" height="100%" border="1">
+  <table width="100%" height="100%" border="1" class="shade">
   <tr>
       {% for weekday in ["日","月","火","水","木","金","土"] %}
         <th>{{weekday}}曜日</th>
@@ -66,11 +66,10 @@
     </tr>
     {% endfor %}
   </table>
-  <footer>
+  <footer class="shade">
     <ul>
       <li id="linkmenu"><a href="{{url_for('makeGroup')}}">グループ作成</a></li>
       <li id="linkmenu"><a href="{{url_for('joinGroupUI')}}">グループ加入</a></li>
-      <li id="linkmenu"><a href="option">設定</a></li>
     </ul>
   </footer>
 </body>
