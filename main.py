@@ -444,6 +444,7 @@ def Gcalendar(year,month):
 ##データベースからyear,month,d(date)のスケジュールがあるか、
 def Gtimeline(year,month,d):
     user_id=current_user.id
+    group_id=current_user.group
     year=year
     month=month
     d=d
@@ -461,12 +462,15 @@ def Gtimeline(year,month,d):
     con.close()
 
     schedule_bit=list(format(Ctimeline(db_schedule, d), '#050b'))
+    if group_id == 0:
+        schedule_bit = list("0b00000000000000000000000000000000000000000000000")
 
     return render_template('/G_Schedule/Timeline.html',
                            year=year,
                            month=month,
                            d=d,
-                           schedule_bit=schedule_bit)
+                           schedule_bit=schedule_bit
+                           )
 
 @login_required
 def change_bit(start_time, end_time):
