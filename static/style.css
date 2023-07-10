@@ -77,7 +77,7 @@ h1{
 
 }
 .sticky{
-  width: 96vh;
+  width: 96vw;
   height: auto;
   position: fixed;
   top: 2vh;
