@@ -70,8 +70,15 @@ h1{
   margin: auto;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.3);
 }
+.longbar{
+  background: #FFFFFF;
+  margin: 100px;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.3);
+
+}
 .sticky{
-  width: 95vh;
+  width: 96vh;
+  height: auto;
   position: fixed;
   top: 2vh;
   left: 2vw;
