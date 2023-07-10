@@ -353,21 +353,22 @@ def Gcalendar(year,month):
     if day_upper_left == -6:
         day_upper_left=1
     month_last_day=calendar.monthrange(year,month)[1]
-    con=sqlite3.connect(DATABASE)
-    cur=con.cursor()
-    #user_id(最初から保持)でDBから条件を絞りgroup_idを取得
     group_id=current_user.group
-    #group_idでDBから条件を絞りグループ全員のuser_idを配列kへ取得
-    k=cur.execute('SELECT * FROM user WHERE "group"='+ str(group_id)).fetchall()
-    group_name=cur.execute('SELECT group_name FROM "group" WHERE "group_id"='+ str(group_id)).fetchone()[0]
     db_schedule=[]
-    #year,month,kよりDBからすべてのメンバーのある月のスケジュールを配列db_scheduleへ取得
-    for i in k:
-        K=i[0]
-        db_schedule.append(cur.execute('SELECT * FROM schedule WHERE year= '+ str(year)
-                                       +" AND month= "+ str(month)
-                                       +" AND user_id="+ str(K)).fetchall())
-    con.close()
+    if group_id != 0:
+        con=sqlite3.connect(DATABASE)
+        cur=con.cursor()
+        #user_id(最初から保持)でDBから条件を絞りgroup_idを取得
+        #group_idでDBから条件を絞りグループ全員のuser_idを配列kへ取得
+        k=cur.execute('SELECT * FROM user WHERE "group"='+ str(group_id)).fetchall()
+        group_name=cur.execute('SELECT group_name FROM "group" WHERE "group_id"='+ str(group_id)).fetchone()[0]
+        #year,month,kよりDBからすべてのメンバーのある月のスケジュールを配列db_scheduleへ取得
+        for i in k:
+            K=i[0]
+            db_schedule.append(cur.execute('SELECT * FROM schedule WHERE year= '+ str(year)
+            +" AND month= "+ str(month)
+            +" AND user_id="+ str(K)).fetchall())
+            con.close()
 
     #どの日付に予定が入っているかの判定
     #すべての日付(配列cl)に予定が入っていない状態(0)とする。
