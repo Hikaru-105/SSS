@@ -355,6 +355,7 @@ def Gcalendar(year,month):
     month_last_day=calendar.monthrange(year,month)[1]
     group_id=current_user.group
     db_schedule=[]
+    group_name=""
     if group_id != 0:
         con=sqlite3.connect(DATABASE)
         cur=con.cursor()
