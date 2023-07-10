@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
 </head>
 <body class="body">
-    <div class="shade">
+    <div class="sticky">
       <h2>
         <a href="{{url_for('Gcalendar', year=year, month=month)}}">カレンダーに戻る</a>
       </h2>
@@ -15,7 +15,7 @@
     </div>
 
     <table width="5760px" class="shade">
-        <tr class="sticky">
+        <tr>
             {% for i in range(10) %}
                 <td width="500000px" align=center>0{{i}}:00</td>
                 <td width="500000px" align=center>0{{i}}:30</td>
