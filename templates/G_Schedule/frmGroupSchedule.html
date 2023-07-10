@@ -49,16 +49,24 @@
             <!--その月のどの日にちにデータが入っているか、それが日付と一致したら色をつけたセルを作る-->
             <td align="center" bgcolor="#D0D0F8">
               <a href="{{url_for('Gtimeline',year=year,month=month,d=day_upper_left + day + week)}}">{{day_upper_left+day+week}}</a>
+              {% if group_id == 0 %}
+              <h5>00:00~24:00</h5>
+              {% else %}
               {% for rt in RT[day_upper_left+day+week] %}
               <h5>{{rt}}</h5>
                 {% endfor %}
+              {% endif %}
             </td>
           {% else %}
             <td align="center">
               <a href="{{url_for('Gtimeline',year=year,month=month,d=day_upper_left + day + week)}}">{{day_upper_left+day+week}}</a>
+              {% if group_id == 0 %}
+              <h5>00:00~24:00</h5>
+              {% else %}
               {% for rt in RT[day_upper_left+day+week] %}
               <h5>{{rt}}</h5>
                 {% endfor %}
+              {% endif %}
             </td>
           {% endif %}
         {% endif %}
