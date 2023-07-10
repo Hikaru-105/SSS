@@ -91,6 +91,7 @@ h1{
 }
 .body {
   background: linear-gradient(90deg, #00ffff, #00ff7f);
+  background-attachment: fixed;
 }
 .box label{
   display: inline-block;
