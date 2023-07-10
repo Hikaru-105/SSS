@@ -3,7 +3,6 @@
   <head>
     <meta charset="utf-8">
     <title>SSS | グループ作成</title>
-    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
     <style>
         .body {
             background: linear-gradient(90deg, #A0FFFF, #00AFFF);
@@ -41,11 +40,11 @@
       <!---グループカレンダー用に書き換える--->
       <h2><a href="{{url_for('Gcalendar', year=year, month=month)}}">グループカレンダーに戻る</a></h2>
       <div class="parent">
-        <form action="{{url_for('submit_new_group')}}" method="post">
+        <form action="{{url_for('submit_new_group')}}" method="post" align="center">
           グループ名<br>
-          <input class="textform" type="text" name="group_name"><br>
+          <input id="textform" type="text" name="group_name"><br>
           あいことば<br>
-          <input class="textform" type="text" name="keyword"><br>
+          <input id="textform" type="text" name="keyword"><br>
           <input type="submit" name="登録" value="登録" class="button">
         </form>
       </div>
