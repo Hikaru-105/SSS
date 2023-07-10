@@ -4,20 +4,54 @@
     <meta charset="utf-8">
     <title>SSS | グループ作成</title>
     <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    <style>
+        .body {
+            background: linear-gradient(90deg, #A0FFFF, #00AFFF);
+        }
+
+        .form {
+            background-color: #FFFFFF;
+            margin: auto;
+            text-align: center;
+            width: 400px;
+            box-shadow: 5px 5px 5px #707070;
+        }
+
+        .button {
+            width: 100px;
+            height: 40px;
+            outline: none;
+            color: #FFFFFF;
+            background-color: #00BFFF;
+        }
+
+        #textform {
+            width: 300px;
+            height: 30px;
+            font-size: 120%;
+            outline: solid;
+            outline-width: 1px;
+        }
+        .center {
+            text-align: center;
+        }
+    </style>
   </head>
-  <body>
-    <h1>新規グループを作成</h1>
-    <br>
-    <!---グループカレンダー用に書き換える--->
-    <h2><a href="{{url_for('Gcalendar', year=year, month=month)}}">グループカレンダーに戻る</a></h2>
-    <div class="parent">
-      <form action="{{url_for('submit_new_group')}}" method="post">
-        グループ名<br>
-        <input type="text" name="group_name"><br>
-        あいことば<br>
-        <input type="text" name="keyword"><br>
-        <input type="submit" name="登録" value="登録">
-      </form>
+  <body class="body">
+    <div class="form">
+      <h1>新規グループを作成</h1>
+      <br>
+      <!---グループカレンダー用に書き換える--->
+      <h2><a href="{{url_for('Gcalendar', year=year, month=month)}}">グループカレンダーに戻る</a></h2>
+      <div class="parent">
+        <form action="{{url_for('submit_new_group')}}" method="post">
+          グループ名<br>
+          <input class="textform" type="text" name="group_name"><br>
+          あいことば<br>
+          <input class="textform" type="text" name="keyword"><br>
+          <input type="submit" name="登録" value="登録" class="button">
+        </form>
+      </div>
     </div>
   </body>
 </html>
