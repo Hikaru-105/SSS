@@ -1,3 +1,10 @@
+#############################################################################
+### Integrater          : 渡邉優太
+### Date                : 2023.6.30
+### Application Name    : Schedule Sharing System
+##############################################################################
+
+
 import schedule_system_database
 import searchGroup, updateGroup
 from flask import Flask, render_template, redirect, request, url_for
@@ -52,6 +59,14 @@ def isalnum_ascii(s):
     return True if s.isalnum() and s.isascii() else False
 
 
+
+#############################################################################
+### Function Name       : to_login_page
+### Designer            : 渡邉優太
+### Date                : 1996.7.12
+### Function            : ルートからログインページへリダイレクト
+### Return              : ログイン画面
+##############################################################################
 @app.route("/")
 def to_login_page():
     return redirect(url_for('login'))
@@ -65,6 +80,13 @@ def schedule():
         today = datetime.datetime.now()
         return redirect(url_for('monthcalendar', year=today.year, month=today.month))
 
+#############################################################################
+### Function Name       : signup
+### Designer            : 久保野駿介
+### Date                : 2023.6.30
+### Function            : 新規登録
+### Return              : 個人スケジュール画面へリダイレクト
+##############################################################################
 @app.route("/signup", methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
@@ -93,6 +115,13 @@ def signup():
     else:
         return render_template('signup.html')
 
+#############################################################################
+### Function Name       : login
+### Designer            : 久保野駿介
+### Date                : 2023.6.30
+### Function            : ログイン
+### Return              : 個人スケジュール画面へリダイレクト
+##############################################################################
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -115,7 +144,7 @@ def login():
             return render_template('login.html', e=e)
     else:
         return render_template('login.html')
-
+#未使用
 @app.route('/logout')
 @login_required
 def logout():
@@ -123,7 +152,14 @@ def logout():
     return redirect('/login')
 
 
-#月カレンダー表示
+#############################################################################
+### Function Name       : monthcalendar
+### Designer            : 渡邉優太
+### Date                : 2023.6.30
+### Function            : 個人スケジュール画面表示
+### Return              : 個人スケジュール画面
+##############################################################################
+@app.route("/login", methods=['GET', 'POST'])
 @app.route('/monthcalendar/<int:year>-<int:month>')
 #ログイン要求
 @login_required
@@ -151,7 +187,13 @@ def monthcalendar(year, month):
         day_upper_left = day_upper_left
     )
 
-#スケジュール編集する日付を選択
+#############################################################################
+### Function Name       : edit
+### Designer            : 渡邉優太
+### Date                : 2023.6.30
+### Function            : 特定の日付のスケジュールを閲覧および編集ページの表示
+### Return              : 該当画面の表示
+##############################################################################
 @app.route('/edit/<int:year>-<int:month>-<int:date>')
 @login_required
 def edit(year,month,date):
@@ -175,7 +217,13 @@ def edit(year,month,date):
         schedules_this_date = schedules_this_date
     )
 
-#入力データ処理
+#############################################################################
+### Function Name       : submit_schedule
+### Designer            : 渡邉優太
+### Date                : 2023.6.30
+### Function            : 入力データをリストに変換
+### Return              : ページ更新
+##############################################################################
 @app.route('/submit_schedule/<int:user_id>-<int:year>-<int:month>-<int:date>', methods=['POST'])
 @login_required
 def submit_schedule(user_id, year, month, date):
@@ -195,7 +243,13 @@ def submit_schedule(user_id, year, month, date):
     edit_schedule(sche_name, user_id, years, months, dates, start_hour, start_minute, end_hour, end_minute, delete_schedules)
     #自身へリダイレクトしてページ更新
     return redirect(url_for('edit', year=year, month=month, date=date))
-
+#############################################################################
+### Function Name       : edit_weekday
+### Designer            : 渡邉優太
+### Date                : 2023.6.30
+### Function            : 曜日スケジュール編集画面を表示
+### Return              : 曜日スケジュール画面に移動
+##############################################################################
 @app.route('/edit_weekday/<int:year>-<int:month>')
 @login_required
 def edit_weekday(year, month):
@@ -208,6 +262,13 @@ def edit_weekday(year, month):
     month = month,
     )
 
+#############################################################################
+### Function Name       : submit_weekday_schedule
+### Designer            : 渡邉優太
+### Date                : 2023.6.30
+### Function            : 入力された曜日スケジュールをリストに変換
+### Return              : 曜日スケジュール画面に移動
+##############################################################################
 @app.route('/submit_weekday_schedule/<int:user_id>-<int:year>-<int:month>', methods=['POST'])
 @login_required
 #入力データ処理（曜日スケジュール用）
@@ -260,6 +321,13 @@ def submit_weekday_schedule(user_id, year, month):
     return redirect(url_for('monthcalendar', year=year, month=month))
 
 
+#############################################################################
+### Function Name       : edit_schedule
+### Designer            : 渡邉優太
+### Date                : 2023.6.30
+### Function            : 引数のスケジュールリストをデータベース登録用に変換
+### Return              : スケジュールリスト
+##############################################################################
 def edit_schedule(sche_name, user_id, years, months, dates, start_hour, start_minute, end_hour, end_minute, delete_schedules):
     #登録処理へ渡すリストの空リストを作成
     new_schedules = []
@@ -287,6 +355,13 @@ def edit_schedule(sche_name, user_id, years, months, dates, start_hour, start_mi
     schedule_system_database.registar_schedule(new_schedules, delete_schedules)
 
 
+#############################################################################
+### Function Name       : makeGroup
+### Designer            : 渡邉優太
+### Date                : 2023.6.30
+### Function            : グループ作成画面を表示
+### Return              : スケジュールリスト
+##############################################################################
 @app.route('/makeGroup')
 @login_required
 def makeGroup():
@@ -334,7 +409,6 @@ def submit_new_group():
     return redirect(url_for('Gcalendar', year=today.year, month=today.month))
 
 
-#グループスケジュールの表示関連
 @app.route("/GSchedule/<int:year>-<int:month>")
 @login_required
 #########################################################
@@ -506,7 +580,6 @@ def Ctimeline(db_schedule, d):
 ###################################################################################################
 # Function Name...joinGroupUI
 # Designer........越村太一
-# Modifier........渡邉優太
 # Function........グループ名、合言葉の入力を受け取り認証要求をする
 # Return..........userInput == "True" : 認証要求
 #                 else                : グループ加入画面を表示する
