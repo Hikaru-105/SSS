@@ -159,7 +159,7 @@ def logout():
 ### Function            : 個人スケジュール画面表示
 ### Return              : 個人スケジュール画面
 ##############################################################################
-@app.route("/login", methods=['GET', 'POST'])
+@app.route('/monthcalendar/<int:year>-<int:month>')
 #ログイン要求
 @login_required
 #カレンダー表示
